@@ -186,12 +186,12 @@ td[contenteditable]:focus{background:#fff3cd;box-shadow:inset 0 0 0 2px #f59e0b}
         <div class="menu-table-wrap">
           <table class="menu-table">
             <thead>
-              <tr><th>日期 / 星期</th><th>餐次</th><th>🌶 辣菜·大荤</th><th>🌶 辣菜·小荤/素菜</th><th>🍲 粤菜·大荤</th><th>🍲 粤菜·小荤/素菜</th><th>青菜</th><th>例汤</th><th>主食</th><th>咸菜·小菜</th></tr>
+              <tr><th>日期 / 星期</th><th>餐次</th><th>大荤</th><th>小荤</th><th>素菜</th><th>青菜</th><th>例汤</th><th>主食</th><th>咸菜·小菜</th></tr>
             </thead>
             <tbody id="menuBody"></tbody>
           </table>
         </div>
-        <div class="note">✅ 自动去重规则：本周 14 个餐次中，<b>辣菜主荤、辣菜素菜、粤菜主荤、粤菜素菜、青菜、例汤、主食各自内部均不重复</b>，每天固定 2 份咸菜（小菜），从下方「固定咸菜」清单里循环取用；其余主荤、素菜、青菜、例汤、主食各自整周不重复。</div>
+        <div class="note">✅ 每餐四道菜：<b>大荤、小荤、素菜、青菜</b>，另配例汤、主食、咸菜（小菜）；大荤/小荤/素菜都带辣菜或粤菜标签，保证每天都有辣菜和粤菜，整周同类不重复。</div>
         </div>
       </div>
     </section>
@@ -460,17 +460,27 @@ function getFixedSides(){
   catch(e){ return [...DEFAULT_FIXED_SIDES]; }
 }
 
+const SMALL_CANTO = ["肉末蒸蛋","西红柿炒蛋","韭菜炒蛋","鲜木耳炒蛋","黄瓜炒蛋","青椒炒香干","芹菜炒香干","西芹炒腐竹","莴笋炒肉","蒜苔炒肉","豆角炒肉","冬瓜炒虾仁","西兰花炒虾仁","杏鲍菇炒牛肉","木耳炒肉"];
+const VEG_SPICY = ["酸辣土豆丝","青椒土豆丝","酸辣青瓜","干煸四季豆","炝炒莴笋丝","干锅包菜","酸辣藕丁","口味长豆角","红椒炒双花"];
+const VEG_CANTO = ["清炒藕片","西兰花","青瓜口蘑","包菜粉丝","清炒豆芽","蒜蓉丝瓜","清炒南瓜"];
+
 function buildWeek(){
-  const n=14;
   const sides = getFixedSides();
+  const spicyBig = shuffle(MENU_POOLS.spicyMain).slice(0,7);
+  const cantoBig = shuffle(MENU_POOLS.cantoMain).slice(0,7);
+  const big=[]; const bigStyle=[];
+  for(let i=0;i<7;i++){ big.push(spicyBig[i]); bigStyle.push("辣菜"); big.push(cantoBig[i]); bigStyle.push("粤菜"); }
+  const small = shuffle(SMALL_CANTO).slice(0,14);
+  const smallStyle = Array(14).fill("粤菜");
+  const spicyVeg = shuffle(VEG_SPICY).slice(0,7);
+  const cantoVeg = shuffle(VEG_CANTO).slice(0,7);
+  const veg=[]; const vegStyle=[];
+  for(let i=0;i<7;i++){ veg.push(cantoVeg[i]); vegStyle.push("粤菜"); veg.push(spicyVeg[i]); vegStyle.push("辣菜"); }
   state.week = {
-    spicyMain: shuffle(MENU_POOLS.spicyMain).slice(0,n),
-    cantoMain: shuffle(MENU_POOLS.cantoMain).slice(0,n),
-    spicySide: shuffle(MENU_POOLS.spicySide).slice(0,n),
-    cantoSide: shuffle(MENU_POOLS.cantoSide).slice(0,n),
-    green: shuffle(MENU_POOLS.green).slice(0,n),
-    soup: shuffle(MENU_POOLS.soup).slice(0,n),
-    staple: shuffle(MENU_POOLS.staple).slice(0,n),
+    big, bigStyle, small, smallStyle, veg, vegStyle,
+    green: shuffle(MENU_POOLS.green).slice(0,14),
+    soup: shuffle(MENU_POOLS.soup).slice(0,14),
+    staple: shuffle(MENU_POOLS.staple).slice(0,14),
     sideDish: Array.from({length:14}, (_,k)=> sides[k % sides.length])
   };
 }
@@ -480,6 +490,7 @@ function renderMenu(){
   if(!state.week) buildWeek();
   const w = state.week;
   const rows = [];
+  const tag = (st) => st==='辣菜' ? '<span class="tag tag-spicy">辣菜</span>' : '<span class="tag tag-canto">粤菜</span>';
   for(let i=0;i<7;i++){
     const d = new Date(start); d.setDate(start.getDate()+i);
     const dateLabel = `${md(d)} ${WEEK_NAMES[i]}`;
@@ -488,15 +499,14 @@ function renderMenu(){
       const meal = m===0 ? '午餐' : '晚餐';
       const cells = `
         <td class="meal">${meal}</td>
-        <td class="dish spicy" contenteditable="true">${w.spicyMain[s]}</td>
-        <td class="dish spicy" contenteditable="true">${w.spicySide[s]}</td>
-        <td class="dish canto" contenteditable="true">${w.cantoMain[s]}</td>
-        <td class="dish canto" contenteditable="true">${w.cantoSide[s]}</td>
-        <td class="dish" contenteditable="true">${w.green[s]}</td>
-        <td class="dish" contenteditable="true">${w.soup[s]}</td>
-        <td class="dish" contenteditable="true">${w.staple[s]}</td>`;
+        <td class="dish"><span contenteditable="true">${w.big[s]}</span> ${tag(w.bigStyle[s])}</td>
+        <td class="dish"><span contenteditable="true">${w.small[s]}</span> ${tag(w.smallStyle[s])}</td>
+        <td class="dish"><span contenteditable="true">${w.veg[s]}</span> ${tag(w.vegStyle[s])}</td>
+        <td class="dish"><span contenteditable="true">${w.green[s]}</span></td>
+        <td class="dish"><span contenteditable="true">${w.soup[s]}</span></td>
+        <td class="dish"><span contenteditable="true">${w.staple[s]}</span></td>`;
       if(m===0){
-        rows.push(`<tr><td class="day-title" rowspan="2">${dateLabel}</td>${cells}<td class="dish side" contenteditable="true" rowspan="2">${w.sideDish[i*2]}<br>${w.sideDish[i*2+1]}</td></tr>`);
+        rows.push(`<tr><td class="day-title" rowspan="2">${dateLabel}</td>${cells}<td class="dish side" rowspan="2"><span contenteditable="true">${w.sideDish[i*2]}</span><br><span contenteditable="true">${w.sideDish[i*2+1]}</span></td></tr>`);
       } else {
         rows.push(`<tr>${cells}</tr>`);
       }
@@ -509,7 +519,7 @@ function renderMenu(){
 function renderMetrics(){
   const totalIng = CATEGORIES.reduce((s,c)=>s+c.items.length,0);
   $('#metrics').innerHTML = [
-    {num:112, lbl:'本周菜品（14餐×辣/粤双线+每日2咸菜）'},
+    {num:84, lbl:'本周四道菜（14餐×大荤/小荤/素菜/青菜）'},
     {num:RECIPES.length, lbl:'可生成做法与配料的菜谱'},
     {num:totalIng, lbl:'六大类食材总数'},
     {num:'100%', lbl:'荤素菜去重率'}
