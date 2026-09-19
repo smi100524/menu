@@ -1,163 +1,732 @@
-<!doctype html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link rel="icon" href="data:,">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>职员餐菜谱系统 · 松岗基地</title>
-</head>
-<body style="margin:0">
-<div id="daguocai-root">
 <style>
-#daguocai-root{--bg:#f5f7fa;--panel:#fff;--line:#e6e9ef;--ink:#1f2733;--muted:#6b7482;--brand:#0f766e;--brand2:#14b8a6;font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;min-height:100vh}
-#daguocai-root *{box-sizing:border-box;margin:0;padding:0}
-#daguocai-root .shell{max-width:1180px;margin:0 auto;padding:16px}
-#daguocai-root h1{font-size:20px;margin-bottom:4px}
-#daguocai-root .sub{color:var(--muted);margin-bottom:12px;font-size:13px}
-#daguocai-root nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-#daguocai-root nav button{font:inherit;padding:9px 14px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--brand);font-weight:700;cursor:pointer}
-#daguocai-root nav button.active{background:var(--brand);color:#fff;border-color:var(--brand)}
-#daguocai-root .page{display:none}
-#daguocai-root .page.active{display:block}
-#daguocai-root .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
-#daguocai-root .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
-#daguocai-root input,#daguocai-root select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff}
-#daguocai-root button.primary{background:var(--brand);color:#fff;border:none;padding:9px 14px;border-radius:9px;font-weight:700;cursor:pointer}
-#daguocai-root table{width:100%;border-collapse:collapse;font-size:13px;background:#fff}
-#daguocai-root th,#daguocai-root td{border:1px solid var(--line);padding:7px;text-align:left;vertical-align:top}
-#daguocai-root th{background:#f0faf9;color:#0f5f59}
-#daguocai-root .day{background:#eef7f6;font-weight:800;color:var(--brand)}
-#daguocai-root td[contenteditable]{outline:none;cursor:text}
-#daguocai-root td[contenteditable]:hover{background:#fffbe6}
-#daguocai-root td[contenteditable]:focus{background:#fff3cd;box-shadow:inset 0 0 0 2px #f59e0b}
-#daguocai-root .side{background:#fffbeb}
-#daguocai-root .meal{font-weight:700}
-#daguocai-root .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
-#daguocai-root .metric{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}
-#daguocai-root .metric .num{font-size:24px;font-weight:800;color:var(--brand)}
-#daguocai-root .metric .lbl{font-size:12px;color:var(--muted)}
-#daguocai-root .pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-#daguocai-root .recipe{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:#fff}
-#daguocai-root .recipe summary{cursor:pointer;font-weight:800;color:#0f5f59;list-style:none}
-#daguocai-root .recipe summary::-webkit-details-marker{display:none}
-#daguocai-root .tag{display:inline-block;padding:2px 7px;border-radius:6px;font-size:11px;font-weight:700;vertical-align:middle}
-#daguocai-root .dt{background:#ede9fe;color:#6d28d9}
-#daguocai-root .st-spicy{background:#fee2e2;color:#b91c1c}
-#daguocai-root .st-canto{background:#dbeafe;color:#1d4ed8}
-#daguocai-root .muted{color:var(--muted);font-size:12px}
-#daguocai-root .chips{display:flex;flex-wrap:wrap;gap:6px}
-#daguocai-root .chip{background:#f1f5f9;border:1px solid #e2e8f0;padding:3px 9px;border-radius:999px;font-size:12px}
-#daguocai-root .note{background:#fff7e8;border:1px solid #fde5b8;color:#9a5b12;padding:8px 12px;border-radius:10px;font-size:13px;margin-top:8px}
-#daguocai-root ol{margin-left:20px}
-@media(max-width:800px){#daguocai-root .pair,#daguocai-root .metrics{grid-template-columns:1fr}}
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --line:#e6e9ef; --ink:#1f2733; --muted:#6b7482;
+  --brand:#0f766e; --brand2:#14b8a6; --accent:#f59e0b; --danger:#e11d48;
+  --soft:#eef8f7; --soft2:#fff7e8; --shadow:0 10px 30px rgba(30,41,59,.08);
+}
+*{box-sizing:border-box; margin:0; padding:0}
+html,body{height:100%}
+body{
+  font-family:"Microsoft YaHei","PingFang SC","Segoe UI",Arial,sans-serif;
+  background:var(--bg); color:var(--ink); font-size:14px; line-height:1.6;
+}
+button{font-family:inherit; cursor:pointer; border:none; border-radius:10px; font-size:14px; transition:.15s}
+input,select{font-family:inherit; font-size:14px; color:var(--ink); border:1px solid var(--line); border-radius:10px; background:#fff; padding:9px 11px; outline:none}
+input:focus,select:focus{border-color:var(--brand2); box-shadow:0 0 0 3px rgba(20,184,166,.12)}
+.app{display:flex; min-height:100vh}
+/* Sidebar */
+.sidebar{
+  width:230px; background:linear-gradient(180deg,#0b3b37 0%,#0f766e 100%); color:#fff;
+  padding:22px 14px; position:sticky; top:0; height:100vh; flex-shrink:0;
+}
+.brand{display:flex; gap:10px; align-items:center; margin-bottom:26px; padding:0 8px}
+.brand .logo{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:22px}
+.brand h1{font-size:16px; font-weight:700; line-height:1.25}
+.brand small{display:block; font-size:11px; opacity:.75; font-weight:400}
+.nav{display:flex; flex-direction:column; gap:6px}
+.nav button{
+  display:flex; align-items:center; gap:10px; width:100%; padding:11px 13px; background:transparent;
+  color:#d8f5f1; text-align:left; border-radius:11px; font-size:14px;
+}
+.nav button:hover{background:rgba(255,255,255,.08)}
+.nav button.active{background:#fff; color:#0f766e; font-weight:700}
+.nav .ico{font-size:18px; width:22px; text-align:center}
+.side-foot{margin-top:auto; font-size:11px; opacity:.7; padding:14px 8px 0}
+/* Main */
+.main{flex:1; min-width:0; padding:26px 30px 60px}
+.page{display:none; max-width:1180px; margin:0 auto}
+.page.active{display:block; animation:fade .25s}
+@keyframes fade{from{opacity:0; transform:translateY(6px)}to{opacity:1; transform:none}}
+.page-head{margin-bottom:20px}
+.page-head h2{font-size:24px; font-weight:800}
+.page-head p{color:var(--muted); margin-top:4px}
+.toolbar{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:18px}
+.btn{background:#fff; border:1px solid var(--line); padding:10px 16px; font-weight:600; color:var(--ink); box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.btn:hover{border-color:var(--brand2); color:var(--brand)}
+.btn.primary{background:var(--brand); color:#fff; border-color:var(--brand)}
+.btn.primary:hover{background:#0b5e57}
+.btn.ghost{background:transparent; box-shadow:none}
+.btn.warn{background:#fff7ed; border-color:#fed7aa; color:#c2410c}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:18px}
+.grid{display:grid; gap:16px}
+.metrics{grid-template-columns:repeat(4,1fr)}
+.metric .num{font-size:30px; font-weight:800; color:var(--brand)}
+.metric .lbl{color:var(--muted); font-size:12px}
+.metric.alt .num{color:#b45309}
+/* Menu table */
+.menu-table-wrap{overflow-x:auto}
+table{width:100%; border-collapse:collapse; background:#fff}
+th,td{padding:11px 12px; border:1px solid var(--line); text-align:left; vertical-align:top}
+th{background:#f0faf9; color:#0f5f59; font-weight:700; white-space:nowrap}
+tbody tr:nth-child(even){background:#fafcfe}
+.day-title{background:#eef7f6 !important; font-weight:800; color:#0f766e}
+.menu-table .meal{font-weight:700; white-space:nowrap}
+.dish{font-size:13px}
+.note{background:var(--soft2); border:1px solid #fde5b8; color:#9a5b12; padding:12px 14px; border-radius:12px; margin-top:14px; font-size:13px}
+/* Chips */
+.chips{display:flex; flex-wrap:wrap; gap:8px}
+.chip{background:#f1f5f9; border:1px solid #e2e8f0; padding:7px 12px; border-radius:999px; font-size:13px; color:#334155; cursor:pointer}
+.chip:hover{background:var(--soft); border-color:var(--brand2); color:var(--brand)}
+.chip.sel{background:var(--brand); color:#fff; border-color:var(--brand)}
+/* Pair builder */
+.pair-panel{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+.pair-box{background:#fff; border:1px solid var(--line); border-radius:16px; padding:18px}
+.pair-box h3{font-size:15px; margin-bottom:14px}
+.select-block{margin-bottom:16px}
+.select-block label{display:block; font-weight:700; margin-bottom:7px; font-size:13px}
+.select-block select{width:100%}
+.arrow{display:flex; align-items:center; justify-content:center; font-size:26px; color:var(--brand2)}
+.recipe-card{border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:14px; background:#fff}
+.recipe-card .rc-head{display:flex; justify-content:space-between; gap:10px; align-items:flex-start}
+.recipe-card h4{font-size:18px; color:#0f5f59}
+.recipe-card .taste{background:var(--soft2); color:#b45309; border-radius:999px; padding:4px 10px; font-size:12px; white-space:nowrap}
+.rc-sec{margin-top:12px}
+.rc-sec h5{font-size:12px; color:var(--muted); margin-bottom:6px; letter-spacing:.5px}
+.ing-list{display:flex; flex-wrap:wrap; gap:6px}
+.ing{background:#f1f5f9; border-radius:8px; padding:4px 9px; font-size:12.5px}
+.steps{list-style:none; counter-reset:s}
+.steps li{position:relative; padding-left:28px; margin-bottom:7px; font-size:13.5px}
+.steps li::before{counter-increment:s; content:counter(s); position:absolute; left:0; top:2px; width:19px; height:19px; background:var(--brand); color:#fff; border-radius:6px; font-size:11px; display:flex; align-items:center; justify-content:center}
+.empty{color:var(--muted); text-align:center; padding:30px; border:1px dashed var(--line); border-radius:14px; background:#fafbfc}
+/* category */
+.cat-grid{grid-template-columns:repeat(3,1fr)}
+.cat-card{background:#fff; border:1px solid var(--line); border-radius:16px; padding:16px}
+.cat-card h3{display:flex; align-items:center; gap:8px; font-size:15px; margin-bottom:12px; color:#0f5f59}
+.cat-card .cnt{font-size:12px; color:var(--muted); font-weight:400}
+/* recipe library */
+.search-row{display:flex; flex-wrap:wrap; gap:10px}
+.search-row input{flex:1; min-width:220px}
+.recipe-list{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:16px}
+.recipe-list .recipe-card{margin-bottom:0; cursor:pointer}
+.recipe-list .recipe-card:hover{border-color:var(--brand2)}
+.meta-line{color:var(--muted); font-size:12.5px; margin-top:6px}
+/* modal */
+.modal{position:fixed; inset:0; background:rgba(15,23,42,.55); display:none; align-items:center; justify-content:center; z-index:50; padding:20px}
+.modal.open{display:flex}
+.modal-box{background:#fff; border-radius:18px; max-width:640px; width:100%; max-height:85vh; overflow:auto; padding:24px}
+.modal-box h3{font-size:20px; color:#0f5f59}
+.modal-close{float:right; background:#f1f5f9; width:34px; height:34px; border-radius:10px; font-size:16px}
+
+.tag{display:inline-block;padding:2px 7px;border-radius:6px;font-size:11px;font-weight:700;line-height:1.5;vertical-align:middle}
+.tag-spicy{background:#fee2e2;color:#b91c1c}
+.tag-canto{background:#dbeafe;color:#1d4ed8}
+.tag-side{background:#d1fae5;color:#047857}
+.tag-group{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
+.dish .tag{margin-left:6px}
+td[contenteditable]{outline:none;cursor:text}
+td[contenteditable]:hover{background:#fffbe6}
+td[contenteditable]:focus{background:#fff3cd;box-shadow:inset 0 0 0 2px #f59e0b}
+
+.dish.spicy{background:#fff1f2}
+.dish.canto{background:#f3f8ff}
+.dish.side{background:#fffbeb}
+
+.tag-type{background:#ede9fe;color:#6d28d9}
+
+/* print */
+.print-bar{margin-bottom:16px; display:flex; justify-content:flex-end}
+@media (max-width:900px){
+  .sidebar{position:static; width:100%; height:auto}
+  .app{flex-direction:column}
+  .nav{flex-direction:row; flex-wrap:wrap}
+  .pair-panel,.metrics,.cat-grid{grid-template-columns:1fr}
+  .recipe-list{grid-template-columns:1fr}
+}
+@media print{
+  .sidebar,.toolbar,.print-bar,.nav{display:none !important}
+  body{background:#fff}
+  .main{padding:0}
+  .page{display:none !important}
+  .page.active{display:block !important}
+  .card{box-shadow:none; border:1px solid #ccc}
+}
 </style>
-<div class="shell">
-  <h1>职员餐菜谱系统 · 松岗基地</h1>
-  <div class="sub">辣菜/粤菜双线 · 固定咸菜</div>
-  <nav>
-    <button data-page="home" class="active">📅 本周菜单</button>
-    <button data-page="pair">🧩 智能配菜</button>
-    <button data-page="recipes">📖 菜谱库</button>
-    <button data-page="categories">🥬 食材分类库</button>
-  </nav>
-
-  <section id="page-home" class="page active">
-    <div class="toolbar"><label>起始周一</label><input type="date" id="weekStart"><button class="primary" id="btnGenerate">🎲 生成菜单</button><button class="primary" id="btnRegen">🔄 换一批</button></div>
-    <div class="metrics" id="metrics"></div>
-    <div class="card"><table><thead><tr><th>日期/星期</th><th>餐次</th><th>🌶辣菜·大荤</th><th>🌶辣菜·小荤/素菜</th><th>🍲粤菜·大荤</th><th>🍲粤菜·小荤/素菜</th><th>青菜</th><th>例汤</th><th>主食</th><th>咸菜·小菜</th></tr></thead><tbody id="menuBody"></tbody></table><div class="note">菜品单元格可直接点击修改；固定咸菜：<span id="sideList"></span>。每餐都有辣菜和粤菜，荤素菜/青菜/例汤/主食整周不重复。</div></div>
-  </section>
-
-  <section id="page-pair" class="page">
-    <div class="pair">
-      <div class="card"><h3>① 选择食材</h3>
-        <p class="muted">蔬菜类</p><select id="vegSelect"></select>
-        <p class="muted" style="margin-top:10px">荤食类（畜禽肉/水产/蛋/豆制品）</p><select id="proteinSelect"></select>
-        
-      </div>
-      <div class="card"><h3>② 生成结果</h3><div id="pairResult"></div></div>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">🍱</div>
+      <h1>职员餐菜谱系统<small>松岗基地 · 每周菜单</small></h1>
     </div>
-  </section>
+    <nav class="nav">
+      <button class="active" data-page="home"><span class="ico">📅</span>本周菜单</button>
+      <button data-page="pair"><span class="ico">🧩</span>智能配菜</button>
+      <button data-page="recipes"><span class="ico">📖</span>菜谱库</button>
+      <button data-page="categories"><span class="ico">🥬</span>食材分类库</button>
+    </nav>
+    <div class="side-foot">六大类食材 · 每周菜单去重<br>选食材自动生成做法与配料</div>
+  </aside>
 
-  <section id="page-recipes" class="page">
-    <div class="toolbar"><input id="recipeSearch" placeholder="搜索菜名/食材"><select id="catFilter"><option value="">全部分类</option><option value="畜禽肉类">畜禽肉类</option><option value="水产类">水产类</option><option value="蛋品类">蛋品类</option><option value="豆制品类">豆制品类</option></select><select id="styleFilter"><option value="">全部菜系</option><option value="辣菜">辣菜</option><option value="粤菜">粤菜</option></select><select id="typeFilter"><option value="">全部菜品分类</option><option value="大荤">大荤</option><option value="小荤">小荤</option><option value="素菜">素菜</option><option value="汤">汤</option></select></div>
-    <div id="recipeList"></div>
-  </section>
+  <main class="main">
+    <!-- 本周菜单 -->
+    <section id="page-home" class="page active">
+      <div class="page-head">
+        <h2>📅 本周菜单</h2>
+        <p>按原表单规则：每个中餐、晚餐都同时排「辣菜（湘菜）」和「粤菜」，另配青菜、例汤、主食，每天 2 份固定咸菜（小菜），从下方固定清单里取；整周荤素菜不重复。</p>
+      </div>
+      <div class="toolbar">
+        <label>起始周一：</label>
+        <input type="date" id="weekStart">
+        <label>固定咸菜（小菜）：</label>
+        <input type="text" id="fixedSidesInput" style="min-width:300px" placeholder="用顿号分隔，如：红油萝卜丁、剁辣椒">
+        <button class="btn primary" id="btnGenerate">🎲 生成本周菜单</button>
+        <button class="btn" id="btnRegen">🔄 再换一批（去重）</button>
+        <button class="btn" id="btnPrint">🖨️ 打印菜单</button>
+      </div>
+      <div class="grid metrics" id="metrics"></div>
+      <div class="card" style="margin-top:16px">
+        <div class="menu-table-wrap">
+          <table class="menu-table">
+            <thead>
+              <tr><th>日期 / 星期</th><th>餐次</th><th>🌶 辣菜·大荤</th><th>🌶 辣菜·小荤/素菜</th><th>🍲 粤菜·大荤</th><th>🍲 粤菜·小荤/素菜</th><th>青菜</th><th>例汤</th><th>主食</th><th>咸菜·小菜</th></tr>
+            </thead>
+            <tbody id="menuBody"></tbody>
+          </table>
+        </div>
+        <div class="note">✅ 自动去重规则：本周 14 个餐次中，<b>辣菜主荤、辣菜素菜、粤菜主荤、粤菜素菜、青菜、例汤、主食各自内部均不重复</b>，每天固定 2 份咸菜（小菜），从下方「固定咸菜」清单里循环取用；其余主荤、素菜、青菜、例汤、主食各自整周不重复。</div>
+        </div>
+      </div>
+    </section>
 
-  <section id="page-categories" class="page">
-    <div id="catList"></div>
-  </section>
+    <!-- 智能配菜 -->
+    <section id="page-pair" class="page">
+      <div class="page-head">
+        <h2>🧩 智能配菜</h2>
+        <p>第一步选蔬菜类，第二步选荤食类（畜禽肉 / 水产 / 蛋品 / 豆制品），自动匹配菜名、做法和所需配料。</p>
+      </div>
+      <div class="pair-panel">
+        <div class="pair-box">
+          <h3>① 选择搭配食材</h3>
+          <div class="select-block">
+            <label>🥬 蔬菜类主料</label>
+            <select id="vegSelect"></select>
+          </div>
+          <div class="select-block">
+            <label>🍖 荤食类主料（畜禽肉 / 水产 / 蛋品 / 豆制品）</label>
+            <select id="proteinSelect"></select>
+          </div>
+          
+          <button class="btn warn" id="btnRandomPair">🎲 随机推荐一道</button>
+        </div>
+        <div class="pair-box">
+          <h3>② 生成结果</h3>
+          <div id="pairResult" class="empty">请先在上方选择蔬菜类和荤食类食材。</div>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <div class="page-head" style="margin-bottom:8px"><h2 style="font-size:17px">💡 常用搭配快速入口</h2></div>
+        <div class="chips" id="quickChips"></div>
+      </div>
+    </section>
+
+    <!-- 菜谱库 -->
+    <section id="page-recipes" class="page">
+      <div class="page-head">
+        <h2>📖 菜谱库</h2>
+        <p>搜索菜名或食材，可按分类筛选；点击卡片查看完整做法与配料。</p>
+      </div>
+      <div class="search-row">
+        <input type="search" id="recipeSearch" placeholder="搜索菜名、蔬菜、主料…">
+        <select id="recipeCatFilter">
+          <option value="">全部分类</option>
+          <option value="畜禽肉类">畜禽肉类</option>
+          <option value="水产类">水产类</option>
+          <option value="蛋品类">蛋品类</option>
+          <option value="豆制品类">豆制品类</option>
+        </select>
+        <select id="recipeStyleFilter">
+          <option value="">全部菜系</option>
+          <option value="辣菜">辣菜</option>
+          <option value="粤菜">粤菜</option>
+        </select>
+        <select id="recipeDishTypeFilter">
+          <option value="">全部菜品分类</option>
+          <option value="大荤">大荤</option>
+          <option value="小荤">小荤</option>
+          <option value="素菜">素菜</option>
+          <option value="青菜">青菜</option>
+          <option value="汤">汤</option>
+          <option value="主食">主食</option>
+          <option value="小菜">小菜</option>
+        </select>
+      </div>
+      <div class="recipe-list" id="recipeList"></div>
+    </section>
+
+    <!-- 食材分类库 -->
+    <section id="page-categories" class="page">
+      <div class="page-head">
+        <h2>🥬 食材分类库</h2>
+        <p>按 6 大类管理常用食材；点击任意食材可到菜谱库查看相关搭配。</p>
+      </div>
+      <input type="search" id="catSearch" placeholder="搜索食材名称…" style="width:100%;max-width:420px;margin-bottom:16px">
+      <div class="grid cat-grid" id="catGrid"></div>
+    </section>
+  </main>
 </div>
+
+<!-- 菜谱详情弹窗 -->
+<div class="modal" id="recipeModal">
+  <div class="modal-box" id="recipeModalBox"></div>
 </div>
+
 <script>
-(function(){
-  const root = document.getElementById('daguocai-root');
-  const DATA = {"categories":[{"id":"veg","name":"蔬菜类","emoji":"🥬","color":"#16a34a","items":["辣椒","青椒","湖南椒","小米椒","土豆","西红柿","白萝卜","胡萝卜","茄子","冬瓜","豆角","白豆角","花菜","莲藕","西芹","韭菜","包菜","黄瓜","莴笋","杏鲍菇","香菇","鲜木耳","毛豆","蒜苔","芹菜","西兰花","大白菜","小白菜","油麦菜","菠菜","豆芽","蒜苗","丝瓜","苦瓜","南瓜","洋葱","大葱","生姜","大蒜","香菜","紫苏","香葱"]},{"id":"meat","name":"畜禽肉类","emoji":"🥩","color":"#dc2626","items":["牛肉","牛腩","牛杂","瘦肉","猪肉","肉末","里脊","五花肉","排骨","猪扒","猪手","猪脚","猪蹄","猪耳朵","猪脸肉","肥肠","鸡肉","鸡腿","鸡翅","鸡爪","鸭肉","羊肉","猪肝","猪肚","腊肉","腊肠"]},{"id":"aquatic","name":"水产类","emoji":"🐟","color":"#0284c7","items":["虾","虾仁","草鱼","皖鱼","鲈鱼","带鱼","鱿鱼","花甲","小鱼仔","海鱼","鱼块","泥鳅"]},{"id":"egg","name":"蛋品类","emoji":"🥚","color":"#ca8a04","items":["鸡蛋","鸭蛋","咸鸭蛋","皮蛋","鹌鹑蛋"]},{"id":"soy","name":"豆制品类","emoji":"🍲","color":"#7c3aed","items":["豆腐","老豆腐","嫩豆腐","豆干","千张","腐竹","豆皮","油豆腐","豆腐泡","豆腐丝","豆渣粑"]},{"id":"dry","name":"干货副食品","emoji":"🍄","color":"#a16207","items":["干木耳","干香菇","黄花菜","粉丝","粉条","海带","紫菜","笋干","梅干菜","花生","莲子","百合","枸杞","红枣"]}],"recipes":[{"id":1,"name":"小炒牛肉","veg":"辣椒","protein":"牛肉","cat":"畜禽肉类","taste":"咸鲜微辣","ingredients":["牛肉片300克","辣椒2个","小米椒2个","蒜3瓣","姜1小块"],"seasonings":["生抽1勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],"steps":["牛肉切片，加生抽、料酒、淀粉抓匀腌10分钟","热锅冷油滑炒牛肉至变色盛出","爆香姜蒜，下辣椒炒至断生","倒入牛肉翻炒，加蚝油、盐调味即可"]},{"id":2,"name":"辣椒炒肉","veg":"辣椒","protein":"猪肉","cat":"畜禽肉类","taste":"香辣下饭","ingredients":["猪前腿肉300克","辣椒2个","蒜3瓣","豆豉少许"],"seasonings":["生抽2勺","老抽半勺","盐适量","食用油适量"],"steps":["猪肉切薄片，肥瘦分开；辣椒切滚刀块","干锅煸香辣椒至虎皮状盛出","先煸肥肉出油，再下瘦肉炒至变色","放蒜、豆豉、辣椒翻炒，加生抽、老抽、盐调味"]},{"id":3,"name":"青椒炒蛋","veg":"辣椒","protein":"鸡蛋","cat":"蛋品类","taste":"咸香","ingredients":["鸡蛋4个","青椒2个","葱1根"],"seasonings":["盐适量","生抽半勺","食用油适量"],"steps":["鸡蛋加少许盐打散，青椒切碎","热油炒熟鸡蛋盛出","下青椒翻炒至断生，倒回鸡蛋","加生抽、盐炒匀即可"]},{"id":4,"name":"青椒炒香干","veg":"辣椒","protein":"豆干","cat":"豆制品类","taste":"咸鲜","ingredients":["豆干4片","青椒2个","蒜2瓣"],"seasonings":["生抽1勺","蚝油半勺","盐少许","食用油适量"],"steps":["豆干、青椒切条，蒜切片","热油下豆干煎至微黄","下蒜片、青椒翻炒至断生","加生抽、蚝油、盐炒匀"]},{"id":5,"name":"剁椒蒸鱼块","veg":"辣椒","protein":"草鱼","cat":"水产类","taste":"鲜辣","ingredients":["草鱼块500克","剁椒2勺","姜丝少许","葱丝少许"],"seasonings":["料酒1勺","蒸鱼豉油2勺","食用油1勺"],"steps":["鱼块加料酒、姜丝腌15分钟","铺上剁椒，水开后大火蒸10分钟","倒掉汤汁，淋蒸鱼豉油","撒葱丝，浇热油即可"]},{"id":6,"name":"土豆烧牛肉","veg":"土豆","protein":"牛肉","cat":"畜禽肉类","taste":"浓郁咸香","ingredients":["牛肉500克","土豆2个","胡萝卜1根","洋葱半个","姜2片"],"seasonings":["生抽2勺","老抽1勺","料酒1勺","八角1个","香叶2片","盐适量","食用油适量"],"steps":["牛肉切块焯水；土豆、胡萝卜切块","炒香姜、洋葱，下牛肉翻炒","加生抽、老抽、料酒、八角、香叶和热水炖40分钟","下土豆、胡萝卜再炖20分钟，加盐收汁"]},{"id":7,"name":"土豆烧排骨","veg":"土豆","protein":"排骨","cat":"畜禽肉类","taste":"咸香软糯","ingredients":["排骨500克","土豆2个","姜3片","蒜2瓣"],"seasonings":["生抽2勺","老抽1勺","料酒1勺","冰糖5粒","盐适量","食用油适量"],"steps":["排骨焯水，土豆切滚刀块","炒糖色后下排骨翻炒上色","加姜蒜、生抽、老抽、料酒和热水炖30分钟","下土豆再炖15分钟，加盐收汁"]},{"id":8,"name":"土豆回锅肉","veg":"土豆","protein":"五花肉","cat":"畜禽肉类","taste":"香辣回甜","ingredients":["五花肉300克","土豆2个","青蒜2根","豆瓣酱1勺"],"seasonings":["生抽1勺","白糖半勺","食用油适量"],"steps":["五花肉煮至八成熟切薄片，土豆切片","五花肉煸炒出油，下豆瓣酱炒出红油","下土豆片炒熟","加生抽、白糖、青蒜翻炒均匀"]},{"id":9,"name":"土豆烧鸡","veg":"土豆","protein":"鸡肉","cat":"畜禽肉类","taste":"咸鲜","ingredients":["鸡块500克","土豆2个","姜3片","蒜3瓣","青椒1个"],"seasonings":["生抽2勺","老抽1勺","料酒1勺","盐适量","食用油适量"],"steps":["鸡块焯水，土豆切块","炒香姜蒜，下鸡块煸炒至微黄","加生抽、老抽、料酒和热水炖20分钟","下土豆炖15分钟，加青椒、盐收汁"]},{"id":10,"name":"西红柿炒鸡蛋","veg":"西红柿","protein":"鸡蛋","cat":"蛋品类","taste":"酸甜咸香","ingredients":["西红柿2个","鸡蛋3个","葱1根"],"seasonings":["盐适量","白糖半勺","食用油适量"],"steps":["鸡蛋打散，西红柿切块","热油炒鸡蛋至凝固盛出","下西红柿炒出汁","倒回鸡蛋，加盐、白糖炒匀，撒葱花"]},{"id":11,"name":"西红柿炖牛腩","veg":"西红柿","protein":"牛腩","cat":"畜禽肉类","taste":"酸甜浓郁","ingredients":["牛腩500克","西红柿3个","洋葱半个","姜3片"],"seasonings":["生抽2勺","番茄酱1勺","盐适量","食用油适量"],"steps":["牛腩焯水，西红柿去皮切块","炒香姜、洋葱，下牛腩翻炒","下西红柿炒软，加生抽、番茄酱和热水炖60分钟","加盐调味，收浓汤汁"]},{"id":12,"name":"番茄鱼片","veg":"西红柿","protein":"草鱼","cat":"水产类","taste":"酸甜鲜美","ingredients":["草鱼片400克","西红柿3个","姜2片","葱1根"],"seasonings":["盐适量","料酒1勺","淀粉1勺","番茄酱1勺","食用油适量"],"steps":["鱼片加盐、料酒、淀粉抓匀","西红柿炒出汁，加番茄酱和水煮开","逐片下鱼片煮至变白","加盐调味，撒葱花"]},{"id":13,"name":"白萝卜烧牛腩","veg":"白萝卜","protein":"牛腩","cat":"畜禽肉类","taste":"清甜浓郁","ingredients":["牛腩500克","白萝卜1根","姜3片","蒜2瓣"],"seasonings":["生抽2勺","老抽1勺","料酒1勺","八角1个","盐适量","食用油适量"],"steps":["牛腩焯水切块，白萝卜切块","炒香姜蒜，下牛腩翻炒","加生抽、老抽、料酒、八角和热水炖50分钟","下白萝卜再炖20分钟，加盐收汁"]},{"id":14,"name":"萝卜炖羊肉","veg":"白萝卜","protein":"羊肉","cat":"畜禽肉类","taste":"温补鲜香","ingredients":["羊肉500克","白萝卜1根","姜4片","葱2段","香菜少许"],"seasonings":["料酒1勺","白胡椒粉适量","盐适量"],"steps":["羊肉切块焯水，白萝卜切块","羊肉、姜、葱入锅加水炖50分钟","下白萝卜再炖20分钟","加盐、白胡椒粉调味，撒香菜"]},{"id":15,"name":"萝卜排骨汤","veg":"白萝卜","protein":"排骨","cat":"畜禽肉类","taste":"清甜","ingredients":["排骨500克","白萝卜1根","姜3片","枸杞少许"],"seasonings":["盐适量","料酒1勺"],"steps":["排骨焯水，白萝卜切块","排骨、姜片加水大火煮开转小火炖40分钟","下白萝卜炖20分钟","加盐、枸杞调味"]},{"id":16,"name":"胡萝卜炒牛肉","veg":"胡萝卜","protein":"牛肉","cat":"畜禽肉类","taste":"咸鲜","ingredients":["牛肉片250克","胡萝卜1根","蒜2瓣"],"seasonings":["生抽1勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],"steps":["牛肉片加生抽、料酒、淀粉腌10分钟","热油滑炒牛肉盛出","下胡萝卜丝炒软","倒回牛肉，加蚝油、盐炒匀"]},{"id":17,"name":"鱼香肉丝","veg":"胡萝卜","protein":"猪肉","cat":"畜禽肉类","taste":"鱼香微辣","ingredients":["猪里脊200克","胡萝卜半根","青椒1个","木耳少许","蒜2瓣"],"seasonings":["生抽1勺","醋1勺","白糖1勺","豆瓣酱1勺","淀粉1勺","食用油适量"],"steps":["肉丝加淀粉、生抽腌10分钟","调鱼香汁：生抽、醋、糖、淀粉和水拌匀","炒散肉丝盛出，下豆瓣酱、蒜炒香","下配菜炒断生，倒回肉丝，淋鱼香汁炒匀"]},{"id":18,"name":"肉末茄子","veg":"茄子","protein":"肉末","cat":"畜禽肉类","taste":"咸香软烂","ingredients":["长茄子2根","猪肉末150克","蒜3瓣","葱1根"],"seasonings":["生抽1勺","蚝油1勺","白糖半勺","盐少许","食用油适量"],"steps":["茄子切条，用盐略腌挤水","热油炒散肉末至变色，下蒜末炒香","下茄子翻炒至软","加生抽、蚝油、白糖调味，撒葱花"]},{"id":19,"name":"冬瓜炒虾仁","veg":"冬瓜","protein":"虾","cat":"水产类","taste":"清淡鲜美","ingredients":["冬瓜300克","虾仁200克","蒜2瓣","葱1根"],"seasonings":["盐适量","料酒1勺","淀粉1勺","食用油适量"],"steps":["虾仁加料酒、淀粉腌10分钟","热油滑炒虾仁盛出","下冬瓜片炒软，加少许水焖2分钟","倒回虾仁，加盐炒匀，撒葱花"]},{"id":20,"name":"冬瓜排骨汤","veg":"冬瓜","protein":"排骨","cat":"畜禽肉类","taste":"清甜解腻","ingredients":["排骨500克","冬瓜400克","姜3片"],"seasonings":["盐适量","料酒1勺"],"steps":["排骨焯水，冬瓜切块","排骨、姜片加水炖40分钟","下冬瓜再炖15分钟","加盐调味"]},{"id":21,"name":"冬瓜老鸭汤","veg":"冬瓜","protein":"鸭肉","cat":"畜禽肉类","taste":"清润","ingredients":["老鸭半只","冬瓜400克","姜4片"],"seasonings":["盐适量","料酒1勺"],"steps":["鸭肉切块焯水，冬瓜切块","鸭肉、姜片加水炖60分钟","下冬瓜再炖20分钟","加盐调味"]},{"id":22,"name":"豆角炒肉","veg":"豆角","protein":"猪肉","cat":"畜禽肉类","taste":"咸鲜","ingredients":["豆角300克","猪肉片200克","蒜3瓣"],"seasonings":["生抽1勺","蚝油1勺","盐适量","食用油适量"],"steps":["豆角切段，猪肉切片","热油炒散肉片至变色盛出","下蒜末、豆角翻炒，加少许水焖熟","倒回肉片，加生抽、蚝油、盐炒匀"]},{"id":23,"name":"肉末炒豆角","veg":"豆角","protein":"肉末","cat":"畜禽肉类","taste":"咸香","ingredients":["豆角300克","猪肉末150克","蒜3瓣","小米椒1个"],"seasonings":["生抽1勺","蚝油1勺","盐少许","食用油适量"],"steps":["豆角切丁焯水","炒散肉末，下蒜末、小米椒炒香","下豆角翻炒至熟","加生抽、蚝油、盐调味"]},{"id":24,"name":"干锅花菜","veg":"花菜","protein":"五花肉","cat":"畜禽肉类","taste":"香辣干香","ingredients":["花菜1棵","五花肉150克","蒜3瓣","青蒜1根","干辣椒3个"],"seasonings":["生抽1勺","豆瓣酱1勺","盐少许","食用油适量"],"steps":["花菜掰小朵，焯水沥干","五花肉煸出油，下豆瓣酱、蒜、干辣椒炒香","下花菜大火翻炒","加生抽、盐、青蒜炒匀"]},{"id":25,"name":"花菜炒虾仁","veg":"花菜","protein":"虾","cat":"水产类","taste":"清淡鲜美","ingredients":["花菜1棵","虾仁200克","蒜2瓣"],"seasonings":["盐适量","料酒1勺","淀粉1勺","食用油适量"],"steps":["花菜掰小朵焯水，虾仁加料酒、淀粉腌10分钟","炒虾仁至变色盛出","下蒜末、花菜翻炒","倒回虾仁，加盐炒匀"]},{"id":26,"name":"莲藕排骨汤","veg":"莲藕","protein":"排骨","cat":"畜禽肉类","taste":"清甜","ingredients":["排骨500克","莲藕1节","姜3片"],"seasonings":["盐适量","料酒1勺"],"steps":["排骨焯水，莲藕切块","排骨、莲藕、姜片加水炖50分钟","加盐调味"]},{"id":27,"name":"莲藕炒肉片","veg":"莲藕","protein":"猪肉","cat":"畜禽肉类","taste":"爽脆咸鲜","ingredients":["莲藕1节","猪肉片200克","蒜2瓣","葱1根"],"seasonings":["生抽1勺","盐适量","食用油适量"],"steps":["莲藕切片焯水，猪肉切片","热油炒肉片至变色","下蒜末、莲藕翻炒","加生抽、盐炒匀，撒葱花"]},{"id":28,"name":"西芹炒牛肉","veg":"西芹","protein":"牛肉","cat":"畜禽肉类","taste":"清香脆嫩","ingredients":["牛肉片250克","西芹2根","蒜2瓣"],"seasonings":["生抽1勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],"steps":["牛肉片加生抽、料酒、淀粉腌10分钟","热油滑炒牛肉盛出","下蒜末、西芹段炒至断生","倒回牛肉，加蚝油、盐炒匀"]},{"id":29,"name":"西芹炒腐竹","veg":"西芹","protein":"腐竹","cat":"豆制品类","taste":"清爽","ingredients":["腐竹150克","西芹2根","胡萝卜半根","蒜2瓣"],"seasonings":["生抽1勺","盐适量","食用油适量"],"steps":["腐竹泡发切段，西芹切段焯水","热油下蒜末爆香","下西芹、胡萝卜翻炒","下腐竹，加生抽、盐炒匀"]},{"id":30,"name":"韭菜炒鸡蛋","veg":"韭菜","protein":"鸡蛋","cat":"蛋品类","taste":"鲜香","ingredients":["韭菜1把","鸡蛋4个"],"seasonings":["盐适量","食用油适量"],"steps":["鸡蛋加盐打散，韭菜切段","热油炒鸡蛋至凝固盛出","下韭菜大火快炒","倒回鸡蛋炒匀"]},{"id":31,"name":"韭菜炒香干","veg":"韭菜","protein":"豆干","cat":"豆制品类","taste":"咸香","ingredients":["豆干4片","韭菜1把","蒜2瓣"],"seasonings":["生抽1勺","盐少许","食用油适量"],"steps":["豆干切条，韭菜切段","热油下豆干煎至微黄","下蒜末、韭菜大火翻炒","加生抽、盐炒匀"]},{"id":32,"name":"手撕包菜","veg":"包菜","protein":"五花肉","cat":"畜禽肉类","taste":"咸鲜微辣","ingredients":["包菜半棵","五花肉100克","蒜3瓣","干辣椒3个"],"seasonings":["生抽1勺","醋半勺","盐适量","食用油适量"],"steps":["包菜手撕成片，五花肉切薄片","五花肉煸出油，下蒜、干辣椒炒香","下包菜大火翻炒","加生抽、醋、盐炒匀"]},{"id":33,"name":"黄瓜炒鸡蛋","veg":"黄瓜","protein":"鸡蛋","cat":"蛋品类","taste":"清爽","ingredients":["黄瓜1根","鸡蛋3个","蒜2瓣"],"seasonings":["盐适量","食用油适量"],"steps":["鸡蛋加盐打散，黄瓜切片","热油炒鸡蛋盛出","下蒜末、黄瓜翻炒","倒回鸡蛋，加盐炒匀"]},{"id":34,"name":"黄瓜炒虾仁","veg":"黄瓜","protein":"虾","cat":"水产类","taste":"清鲜","ingredients":["黄瓜1根","虾仁200克","蒜2瓣"],"seasonings":["盐适量","料酒1勺","淀粉1勺","食用油适量"],"steps":["虾仁加料酒、淀粉腌10分钟","热油炒虾仁盛出","下蒜末、黄瓜翻炒","倒回虾仁，加盐炒匀"]},{"id":35,"name":"黄瓜炒肉片","veg":"黄瓜","protein":"猪肉","cat":"畜禽肉类","taste":"清爽咸鲜","ingredients":["黄瓜1根","猪肉片200克","蒜2瓣"],"seasonings":["生抽1勺","盐适量","食用油适量"],"steps":["黄瓜切片，猪肉切片","热油炒肉片至变色","下蒜末、黄瓜翻炒","加生抽、盐炒匀"]},{"id":36,"name":"莴笋炒肉","veg":"莴笋","protein":"猪肉","cat":"畜禽肉类","taste":"清脆","ingredients":["莴笋1根","猪肉片200克","蒜2瓣"],"seasonings":["生抽1勺","盐适量","食用油适量"],"steps":["莴笋去皮切片，猪肉切片","热油炒肉片至变色","下蒜末、莴笋翻炒","加生抽、盐炒匀"]},{"id":37,"name":"杏鲍菇炒牛肉","veg":"杏鲍菇","protein":"牛肉","cat":"畜禽肉类","taste":"咸鲜","ingredients":["杏鲍菇2个","牛肉片250克","蒜2瓣"],"seasonings":["生抽1勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],"steps":["牛肉片加生抽、料酒、淀粉腌10分钟","热油滑炒牛肉盛出","下杏鲍菇片炒软","倒回牛肉，加蚝油、盐炒匀"]},{"id":38,"name":"小炒杏鲍菇","veg":"杏鲍菇","protein":"猪肉","cat":"畜禽肉类","taste":"咸香","ingredients":["杏鲍菇2个","猪肉片150克","青椒1个","蒜2瓣"],"seasonings":["生抽1勺","蚝油1勺","盐少许","食用油适量"],"steps":["杏鲍菇切片，猪肉切片，青椒切块","热油炒肉片至变色","下蒜末、杏鲍菇炒软","下青椒，加生抽、蚝油、盐炒匀"]},{"id":39,"name":"香菇滑鸡","veg":"香菇","protein":"鸡肉","cat":"畜禽肉类","taste":"鲜嫩","ingredients":["鸡腿肉400克","鲜香菇6朵","姜3片","葱1根"],"seasonings":["生抽2勺","蚝油1勺","料酒1勺","淀粉1勺","食用油适量"],"steps":["鸡肉切块，加生抽、蚝油、料酒、淀粉腌15分钟","香菇切片","热油下姜片、鸡块炒至变色","下香菇翻炒，加少许水焖8分钟，撒葱花"]},{"id":40,"name":"鲜木耳炒鸡蛋","veg":"鲜木耳","protein":"鸡蛋","cat":"蛋品类","taste":"脆嫩","ingredients":["鲜木耳150克","鸡蛋3个","蒜2瓣"],"seasonings":["盐适量","生抽半勺","食用油适量"],"steps":["木耳撕小朵焯水，鸡蛋打散","热油炒鸡蛋盛出","下蒜末、木耳翻炒","倒回鸡蛋，加盐、生抽炒匀"]},{"id":41,"name":"鲜木耳炒肉","veg":"鲜木耳","protein":"猪肉","cat":"畜禽肉类","taste":"咸鲜","ingredients":["鲜木耳150克","猪肉片200克","青椒1个","蒜2瓣"],"seasonings":["生抽1勺","蚝油1勺","盐适量","食用油适量"],"steps":["木耳撕小朵焯水，肉切片，青椒切块","热油炒肉片至变色","下蒜末、木耳、青椒翻炒","加生抽、蚝油、盐炒匀"]},{"id":42,"name":"毛豆炒肉末","veg":"毛豆","protein":"猪肉","cat":"畜禽肉类","taste":"咸香","ingredients":["毛豆200克","猪肉末150克","蒜2瓣","小米椒1个"],"seasonings":["生抽1勺","蚝油1勺","盐少许","食用油适量"],"steps":["毛豆焯水，肉末炒散","下蒜末、小米椒炒香","下毛豆翻炒至熟","加生抽、蚝油、盐调味"]},{"id":43,"name":"蒜苔炒肉","veg":"蒜苔","protein":"猪肉","cat":"畜禽肉类","taste":"咸鲜","ingredients":["蒜苔1把","猪肉片200克","蒜2瓣"],"seasonings":["生抽1勺","蚝油1勺","盐适量","食用油适量"],"steps":["蒜苔切段，猪肉切片","热油炒肉片至变色盛出","下蒜末、蒜苔翻炒至断生","倒回肉片，加生抽、蚝油、盐炒匀"]},{"id":44,"name":"蒜苔炒鸡蛋","veg":"蒜苔","protein":"鸡蛋","cat":"蛋品类","taste":"鲜香","ingredients":["蒜苔1把","鸡蛋3个"],"seasonings":["盐适量","食用油适量"],"steps":["蒜苔切段，鸡蛋打散","热油炒鸡蛋盛出","下蒜苔翻炒至熟","倒回鸡蛋，加盐炒匀"]},{"id":45,"name":"芹菜炒牛肉","veg":"芹菜","protein":"牛肉","cat":"畜禽肉类","taste":"清香","ingredients":["牛肉片250克","芹菜1把","蒜2瓣"],"seasonings":["生抽1勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],"steps":["牛肉片加生抽、料酒、淀粉腌10分钟","热油滑炒牛肉盛出","下蒜末、芹菜段炒至断生","倒回牛肉，加蚝油、盐炒匀"]},{"id":46,"name":"芹菜炒香干","veg":"芹菜","protein":"豆干","cat":"豆制品类","taste":"咸香","ingredients":["豆干4片","芹菜1把","蒜2瓣"],"seasonings":["生抽1勺","盐少许","食用油适量"],"steps":["豆干切条，芹菜切段","热油下豆干煎至微黄","下蒜末、芹菜翻炒","加生抽、盐炒匀"]},{"id":47,"name":"西兰花炒虾仁","veg":"西兰花","protein":"虾","cat":"水产类","taste":"清淡","ingredients":["西兰花1棵","虾仁200克","蒜2瓣"],"seasonings":["盐适量","料酒1勺","淀粉1勺","食用油适量"],"steps":["西兰花掰小朵焯水，虾仁加料酒、淀粉腌10分钟","热油炒虾仁盛出","下蒜末、西兰花翻炒","倒回虾仁，加盐炒匀"]},{"id":48,"name":"西兰花炒牛肉","veg":"西兰花","protein":"牛肉","cat":"畜禽肉类","taste":"咸鲜","ingredients":["西兰花1棵","牛肉片250克","蒜2瓣"],"seasonings":["生抽1勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],"steps":["西兰花焯水，牛肉片加生抽、料酒、淀粉腌10分钟","热油滑炒牛肉盛出","下蒜末、西兰花翻炒","倒回牛肉，加蚝油、盐炒匀"]},{"id":49,"name":"白菜炒肉","veg":"大白菜","protein":"猪肉","cat":"畜禽肉类","taste":"家常咸鲜","ingredients":["大白菜半棵","猪肉片200克","蒜2瓣"],"seasonings":["生抽1勺","盐适量","食用油适量"],"steps":["白菜切片，肉切片","热油炒肉片至变色","下蒜末、白菜帮翻炒，再下菜叶","加生抽、盐炒匀"]},{"id":50,"name":"白菜炖豆腐","veg":"大白菜","protein":"豆腐","cat":"豆制品类","taste":"清淡","ingredients":["大白菜半棵","豆腐1块","葱1根"],"seasonings":["盐适量","生抽半勺","食用油适量"],"steps":["白菜切片，豆腐切块","热油下豆腐煎至微黄盛出","下白菜翻炒至软，加少许水","放回豆腐炖5分钟，加盐、生抽调味"]},{"id":51,"name":"香辣鸡丁","veg":"辣椒","protein":"鸡肉","cat":"畜禽肉类","taste":"香辣","ingredients":["鸡腿肉400克","辣椒2个","蒜3瓣","干辣椒4个"],"seasonings":["生抽1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],"steps":["鸡肉切丁，加生抽、料酒、淀粉腌15分钟","热油炒鸡丁至变色盛出","爆香蒜、干辣椒、辣椒","倒回鸡丁，加盐炒匀"]},{"id":52,"name":"豆角炒鸡蛋","veg":"豆角","protein":"鸡蛋","cat":"蛋品类","taste":"鲜香","ingredients":["豆角250克","鸡蛋3个","蒜2瓣"],"seasonings":["盐适量","食用油适量"],"steps":["豆角切丁焯水，鸡蛋打散","热油炒鸡蛋盛出","下蒜末、豆角炒熟","倒回鸡蛋，加盐炒匀"]},{"id":53,"name":"莲藕焖猪脚","veg":"莲藕","protein":"猪脚","cat":"畜禽肉类","taste":"浓郁","ingredients":["猪脚500克","莲藕1节","姜3片"],"seasonings":["生抽2勺","老抽1勺","料酒1勺","冰糖5粒","盐适量","食用油适量"],"steps":["猪脚焯水，莲藕切块","炒糖色后下猪脚翻炒上色","加姜、生抽、老抽、料酒和热水炖60分钟","下莲藕再炖20分钟，加盐收汁"]},{"id":54,"name":"毛豆炒虾仁","veg":"毛豆","protein":"虾","cat":"水产类","taste":"清淡鲜美","ingredients":["毛豆200克","虾仁200克","蒜2瓣"],"seasonings":["盐适量","料酒1勺","淀粉1勺","食用油适量"],"steps":["毛豆焯水，虾仁加料酒、淀粉腌10分钟","热油炒虾仁盛出","下蒜末、毛豆翻炒","倒回虾仁，加盐炒匀"]},{"id":55,"name":"白萝卜炖牛杂","veg":"白萝卜","protein":"牛杂","cat":"畜禽肉类","taste":"浓郁鲜香","ingredients":["牛杂500克","白萝卜1根","姜4片","葱2段","香叶2片"],"seasonings":["生抽1勺","老抽半勺","料酒2勺","八角1个","盐适量","食用油适量"],"steps":["牛杂清洗焯水，切块；白萝卜切块","炒香姜葱，下牛杂翻炒","加生抽、老抽、料酒、八角和热水炖50分钟","下白萝卜再炖20分钟，加盐收汁"]},{"id":56,"name":"香辣牛杂","veg":"辣椒","protein":"牛杂","cat":"畜禽肉类","taste":"香辣","ingredients":["熟牛杂400克","辣椒2个","蒜3瓣","干辣椒4个"],"seasonings":["生抽1勺","蚝油1勺","盐少许","食用油适量"],"steps":["牛杂切片，辣椒切段","爆香蒜、干辣椒","下牛杂大火翻炒2分钟","下辣椒，加生抽、蚝油、盐炒匀"]},{"id":57,"name":"辣椒炒瘦肉","veg":"辣椒","protein":"瘦肉","cat":"畜禽肉类","taste":"咸鲜下饭","ingredients":["猪瘦肉300克","辣椒2个","蒜3瓣"],"seasonings":["生抽2勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],"steps":["瘦肉切片，加生抽、料酒、淀粉抓匀腌10分钟","热油滑炒瘦肉至变色盛出","下蒜末、辣椒炒至断生","倒回瘦肉，加蚝油、盐炒匀"]},{"id":58,"name":"蒜苔炒瘦肉","veg":"蒜苔","protein":"瘦肉","cat":"畜禽肉类","taste":"清脆咸鲜","ingredients":["猪瘦肉250克","蒜苔1把","蒜2瓣"],"seasonings":["生抽1勺","蚝油1勺","盐适量","食用油适量"],"steps":["瘦肉切丝，蒜苔切段","热油炒瘦肉至变色盛出","下蒜末、蒜苔炒至断生","倒回瘦肉，加生抽、蚝油、盐炒匀"]},{"id":59,"name":"黑椒洋葱炒猪扒","veg":"洋葱","protein":"猪扒","cat":"畜禽肉类","taste":"黑椒咸香","ingredients":["猪扒肉300克","洋葱1个","青椒1个","蒜2瓣"],"seasonings":["生抽1勺","蚝油1勺","黑胡椒碎适量","料酒1勺","淀粉1勺","盐少许","食用油适量"],"steps":["猪扒肉切条，加生抽、料酒、淀粉抓匀腌10分钟","热油炒猪扒至变色盛出","下蒜末、洋葱炒香","倒回猪扒和青椒，加蚝油、黑胡椒碎、盐炒匀"]},{"id":60,"name":"红油黄瓜拌猪耳","veg":"黄瓜","protein":"猪耳朵","cat":"畜禽肉类","taste":"红油香辣","ingredients":["熟猪耳朵1个","黄瓜1根","蒜3瓣","葱1根"],"seasonings":["生抽1勺","香醋1勺","红油辣子2勺","白糖半勺","盐适量"],"steps":["猪耳朵切薄片，黄瓜拍碎切段","蒜切末，葱切花","把猪耳、黄瓜、蒜末、葱花放大碗","加生抽、香醋、红油辣子、白糖、盐拌匀"]},{"id":61,"name":"蒜苔炒猪脸肉","veg":"蒜苔","protein":"猪脸肉","cat":"畜禽肉类","taste":"咸香","ingredients":["卤猪脸肉300克","蒜苔1把","蒜2瓣","小米椒1个"],"seasonings":["生抽1勺","盐少许","食用油适量"],"steps":["猪脸肉切薄片，蒜苔切段","热油下猪脸肉煸炒出香","下蒜末、小米椒、蒜苔翻炒","加生抽、盐炒匀"]},{"id":62,"name":"干煸肥肠","veg":"辣椒","protein":"肥肠","cat":"畜禽肉类","taste":"干香麻辣","ingredients":["熟肥肠400克","辣椒2个","干辣椒5个","花椒少许","蒜3瓣"],"seasonings":["生抽1勺","盐适量","食用油适量"],"steps":["肥肠切段，辣椒切块","少油下肥肠中小火煸至微焦出油","下干辣椒、花椒、蒜炒香","下辣椒，加生抽、盐翻炒均匀"]},{"id":63,"name":"土豆焖猪手","veg":"土豆","protein":"猪手","cat":"畜禽肉类","taste":"软糯咸香","ingredients":["猪手1只","土豆2个","姜3片","蒜3瓣"],"seasonings":["生抽2勺","老抽1勺","料酒1勺","冰糖5粒","盐适量","食用油适量"],"steps":["猪手剁块焯水，土豆切块","炒糖色后下猪手翻炒上色","加姜蒜、生抽、老抽、料酒和热水炖50分钟","下土豆再炖20分钟，加盐收汁"]}],"pools":{"spicyMain":["小炒牛肉","剁椒鱼块","水煮鱼片","回锅肉","农家小炒肉","干煸鸭","辣子鸡","香辣虾","剁椒蒸皖鱼","泡椒牛肉","麻辣猪耳","口水鸡","辣椒炒肉","香辣牛杂"],"cantoMain":["红烧肉","金牌烤鸭","椒盐虾","卤水鸭","葱油猪手","白灼虾","萝卜炖羊肉","粉蒸肉","啤酒鸭","土豆烧排骨","红烧鸡块","糖醋里脊","香菇滑鸡","清蒸鲈鱼","红烧草鱼","蒜香骨","椒盐海鱼","西红柿炖牛腩","红烧肉丸","豉香鱼块"],"spicySide":["鱼香茄子","麻婆豆腐","家常豆腐","酸辣土豆丝","干锅花菜","蚂蚁上树","青椒土豆丝","酸辣青瓜","干煸四季豆","炝炒莴笋丝","干锅包菜","酸辣藕丁","口味长豆角","红椒炒双花"],"cantoSide":["肉末蒸蛋","西红柿炒蛋","韭菜炒蛋","清炒藕片","西兰花","青瓜口蘑","鲜木耳炒蛋","黄瓜炒蛋","青椒炒香干","芹菜炒香干","西芹炒腐竹","莴笋炒肉","蒜苔炒肉","豆角炒肉","冬瓜炒虾仁","西兰花炒虾仁","杏鲍菇炒牛肉","包菜粉丝","木耳炒肉"],"green":["清炒青菜","蒜蓉油麦菜","清炒小白菜","蒜蓉生菜","清炒菠菜","醋溜大白菜","白灼菜心","蒜蓉上海青","清炒空心菜","清炒娃娃菜","蒜蓉西兰花","清炒豆苗","蒜蓉芥蓝","上汤苋菜"],"soup":["冬瓜大骨汤","白萝卜筒子骨汤","玉米棒大骨汤","虫草花鸡汤","冬瓜龙骨汤","紫菜蛋花汤","西红柿蛋汤","莲藕排骨汤","冬瓜老鸭汤","海带排骨汤","玉米排骨汤","丝瓜蛋汤","番茄豆腐汤","绿豆汤"],"staple":["老面馒头","白米饭","葱花卷","红糖馒头","窝窝头","手工水饺","蒸红薯","玉米棒","奶香馒头","花卷","杂粮饭","葱油饼","扬州炒饭","豆沙包"],"sideDish":["红油萝卜丁","剁辣椒","红油榨菜丝","青剁椒","脆黄瓜条","红油洋姜","外婆菜","酸豆角","泡椒笋","酱萝卜","辣子面","红油酸豆角","凉拌海带丝","蒜蓉辣酱"]},"styleMap":{"1":"辣菜","2":"辣菜","3":"粤菜","4":"辣菜","5":"辣菜","6":"粤菜","7":"粤菜","8":"辣菜","9":"粤菜","10":"粤菜","11":"粤菜","12":"粤菜","13":"粤菜","14":"粤菜","15":"粤菜","16":"粤菜","17":"辣菜","18":"辣菜","19":"粤菜","20":"粤菜","21":"粤菜","22":"粤菜","23":"粤菜","24":"辣菜","25":"粤菜","26":"粤菜","27":"粤菜","28":"粤菜","29":"粤菜","30":"粤菜","31":"粤菜","32":"辣菜","33":"粤菜","34":"粤菜","35":"粤菜","36":"粤菜","37":"粤菜","38":"粤菜","39":"粤菜","40":"粤菜","41":"粤菜","42":"粤菜","43":"粤菜","44":"粤菜","45":"粤菜","46":"粤菜","47":"粤菜","48":"粤菜","49":"粤菜","50":"粤菜","51":"辣菜","52":"粤菜","53":"粤菜","54":"粤菜","55":"粤菜","56":"辣菜","57":"辣菜","58":"粤菜","59":"粤菜","60":"辣菜","61":"粤菜","62":"辣菜","63":"粤菜"},"dishTypeMap":{"1":"大荤","2":"大荤","3":"小荤","4":"小荤","5":"大荤","6":"大荤","7":"大荤","8":"大荤","9":"大荤","10":"小荤","11":"大荤","12":"大荤","13":"大荤","14":"大荤","15":"汤","16":"大荤","17":"大荤","18":"小荤","19":"大荤","20":"汤","21":"汤","22":"小荤","23":"小荤","24":"小荤","25":"大荤","26":"汤","27":"小荤","28":"小荤","29":"小荤","30":"小荤","31":"小荤","32":"小荤","33":"小荤","34":"大荤","35":"小荤","36":"小荤","37":"小荤","38":"小荤","39":"大荤","40":"小荤","41":"小荤","42":"小荤","43":"小荤","44":"小荤","45":"小荤","46":"小荤","47":"大荤","48":"小荤","49":"小荤","50":"素菜","51":"大荤","52":"小荤","53":"大荤","54":"大荤","55":"大荤","56":"大荤","57":"大荤","58":"小荤","59":"大荤","60":"小荤","61":"小荤","62":"大荤","63":"大荤"},"defaultSides":["红油萝卜丁","剁辣椒","红油榨菜丝","酸豆角"],"weekNames":["周一","周二","周三","周四","周五","周六","周日"]};
-  const RECIPES = DATA.recipes, CATEGORIES = DATA.categories, POOLS = DATA.pools;
-  const STYLE = DATA.styleMap, DTYPE = DATA.dishTypeMap, SIDES = DATA.defaultSides, WEEK = DATA.weekNames;
-  const styleOf = r => STYLE[String(r.id)] || '粤菜';
-  const typeOf = r => DTYPE[String(r.id)] || '大荤';
-  const $ = s => root.querySelector(s);
-  const $$ = s => [...root.querySelectorAll(s)];
-  const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const shuffle = a => { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; };
+/* ============ 数据：六大类食材 ============ */
+const CATEGORIES = [
+  { id:"veg", name:"蔬菜类", emoji:"🥬", color:"#16a34a", items:["辣椒","青椒","湖南椒","小米椒","土豆","西红柿","白萝卜","胡萝卜","茄子","冬瓜","豆角","白豆角","花菜","莲藕","西芹","韭菜","包菜","黄瓜","莴笋","杏鲍菇","香菇","鲜木耳","毛豆","蒜苔","芹菜","西兰花","大白菜","小白菜","油麦菜","菠菜","豆芽","蒜苗","丝瓜","苦瓜","南瓜","洋葱","大葱","生姜","大蒜","香菜","紫苏","香葱"] },
+  { id:"meat", name:"畜禽肉类", emoji:"🥩", color:"#dc2626", items:["牛肉","牛腩","牛杂","瘦肉","猪肉","肉末","里脊","五花肉","排骨","猪扒","猪手","猪脚","猪蹄","猪耳朵","猪脸肉","肥肠","鸡肉","鸡腿","鸡翅","鸡爪","鸭肉","羊肉","猪肝","猪肚","腊肉","腊肠"] },
+  { id:"aquatic", name:"水产类", emoji:"🐟", color:"#0284c7", items:["虾","虾仁","草鱼","皖鱼","鲈鱼","带鱼","鱿鱼","花甲","小鱼仔","海鱼","鱼块","泥鳅"] },
+  { id:"egg", name:"蛋品类", emoji:"🥚", color:"#ca8a04", items:["鸡蛋","鸭蛋","咸鸭蛋","皮蛋","鹌鹑蛋"] },
+  { id:"soy", name:"豆制品类", emoji:"🍲", color:"#7c3aed", items:["豆腐","老豆腐","嫩豆腐","豆干","千张","腐竹","豆皮","油豆腐","豆腐泡","豆腐丝","豆渣粑"] },
+  { id:"dry", name:"干货副食品", emoji:"🍄", color:"#a16207", items:["干木耳","干香菇","黄花菜","粉丝","粉条","海带","紫菜","笋干","梅干菜","花生","莲子","百合","枸杞","红枣"] }
+];
 
-  function nextMonday(){ const d=new Date(); d.setDate(d.getDate()-((d.getDay()+6)%7)+7); return d.toISOString().slice(0,10); }
-  function buildWeek(){ const n=14; const sides=SIDES.length?SIDES:['红油萝卜丁','剁辣椒']; return {
-    spicyMain: shuffle(POOLS.spicyMain).slice(0,n), cantoMain: shuffle(POOLS.cantoMain).slice(0,n),
-    spicySide: shuffle(POOLS.spicySide).slice(0,n), cantoSide: shuffle(POOLS.cantoSide).slice(0,n),
-    green: shuffle(POOLS.green).slice(0,n), soup: shuffle(POOLS.soup).slice(0,n), staple: shuffle(POOLS.staple).slice(0,n),
-    sideDish: Array.from({length:14},(_,k)=>sides[k%sides.length]) }; }
-  let week = buildWeek();
+/* ============ 数据：菜谱库（蔬菜 + 荤食 => 菜名/配料/做法） ============ */
+const RECIPES = [
+  {id:1,name:"小炒牛肉",veg:"辣椒",protein:"牛肉",cat:"畜禽肉类",taste:"咸鲜微辣",ingredients:["牛肉片300克","辣椒2个","小米椒2个","蒜3瓣","姜1小块"],seasonings:["生抽1勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],steps:["牛肉切片，加生抽、料酒、淀粉抓匀腌10分钟","热锅冷油滑炒牛肉至变色盛出","爆香姜蒜，下辣椒炒至断生","倒入牛肉翻炒，加蚝油、盐调味即可"]},
+  {id:2,name:"辣椒炒肉",veg:"辣椒",protein:"猪肉",cat:"畜禽肉类",taste:"香辣下饭",ingredients:["猪前腿肉300克","辣椒2个","蒜3瓣","豆豉少许"],seasonings:["生抽2勺","老抽半勺","盐适量","食用油适量"],steps:["猪肉切薄片，肥瘦分开；辣椒切滚刀块","干锅煸香辣椒至虎皮状盛出","先煸肥肉出油，再下瘦肉炒至变色","放蒜、豆豉、辣椒翻炒，加生抽、老抽、盐调味"]},
+  {id:3,name:"青椒炒蛋",veg:"辣椒",protein:"鸡蛋",cat:"蛋品类",taste:"咸香",ingredients:["鸡蛋4个","青椒2个","葱1根"],seasonings:["盐适量","生抽半勺","食用油适量"],steps:["鸡蛋加少许盐打散，青椒切碎","热油炒熟鸡蛋盛出","下青椒翻炒至断生，倒回鸡蛋","加生抽、盐炒匀即可"]},
+  {id:4,name:"青椒炒香干",veg:"辣椒",protein:"豆干",cat:"豆制品类",taste:"咸鲜",ingredients:["豆干4片","青椒2个","蒜2瓣"],seasonings:["生抽1勺","蚝油半勺","盐少许","食用油适量"],steps:["豆干、青椒切条，蒜切片","热油下豆干煎至微黄","下蒜片、青椒翻炒至断生","加生抽、蚝油、盐炒匀"]},
+  {id:5,name:"剁椒蒸鱼块",veg:"辣椒",protein:"草鱼",cat:"水产类",taste:"鲜辣",ingredients:["草鱼块500克","剁椒2勺","姜丝少许","葱丝少许"],seasonings:["料酒1勺","蒸鱼豉油2勺","食用油1勺"],steps:["鱼块加料酒、姜丝腌15分钟","铺上剁椒，水开后大火蒸10分钟","倒掉汤汁，淋蒸鱼豉油","撒葱丝，浇热油即可"]},
+  {id:6,name:"土豆烧牛肉",veg:"土豆",protein:"牛肉",cat:"畜禽肉类",taste:"浓郁咸香",ingredients:["牛肉500克","土豆2个","胡萝卜1根","洋葱半个","姜2片"],seasonings:["生抽2勺","老抽1勺","料酒1勺","八角1个","香叶2片","盐适量","食用油适量"],steps:["牛肉切块焯水；土豆、胡萝卜切块","炒香姜、洋葱，下牛肉翻炒","加生抽、老抽、料酒、八角、香叶和热水炖40分钟","下土豆、胡萝卜再炖20分钟，加盐收汁"]},
+  {id:7,name:"土豆烧排骨",veg:"土豆",protein:"排骨",cat:"畜禽肉类",taste:"咸香软糯",ingredients:["排骨500克","土豆2个","姜3片","蒜2瓣"],seasonings:["生抽2勺","老抽1勺","料酒1勺","冰糖5粒","盐适量","食用油适量"],steps:["排骨焯水，土豆切滚刀块","炒糖色后下排骨翻炒上色","加姜蒜、生抽、老抽、料酒和热水炖30分钟","下土豆再炖15分钟，加盐收汁"]},
+  {id:8,name:"土豆回锅肉",veg:"土豆",protein:"五花肉",cat:"畜禽肉类",taste:"香辣回甜",ingredients:["五花肉300克","土豆2个","青蒜2根","豆瓣酱1勺"],seasonings:["生抽1勺","白糖半勺","食用油适量"],steps:["五花肉煮至八成熟切薄片，土豆切片","五花肉煸炒出油，下豆瓣酱炒出红油","下土豆片炒熟","加生抽、白糖、青蒜翻炒均匀"]},
+  {id:9,name:"土豆烧鸡",veg:"土豆",protein:"鸡肉",cat:"畜禽肉类",taste:"咸鲜",ingredients:["鸡块500克","土豆2个","姜3片","蒜3瓣","青椒1个"],seasonings:["生抽2勺","老抽1勺","料酒1勺","盐适量","食用油适量"],steps:["鸡块焯水，土豆切块","炒香姜蒜，下鸡块煸炒至微黄","加生抽、老抽、料酒和热水炖20分钟","下土豆炖15分钟，加青椒、盐收汁"]},
+  {id:10,name:"西红柿炒鸡蛋",veg:"西红柿",protein:"鸡蛋",cat:"蛋品类",taste:"酸甜咸香",ingredients:["西红柿2个","鸡蛋3个","葱1根"],seasonings:["盐适量","白糖半勺","食用油适量"],steps:["鸡蛋打散，西红柿切块","热油炒鸡蛋至凝固盛出","下西红柿炒出汁","倒回鸡蛋，加盐、白糖炒匀，撒葱花"]},
+  {id:11,name:"西红柿炖牛腩",veg:"西红柿",protein:"牛腩",cat:"畜禽肉类",taste:"酸甜浓郁",ingredients:["牛腩500克","西红柿3个","洋葱半个","姜3片"],seasonings:["生抽2勺","番茄酱1勺","盐适量","食用油适量"],steps:["牛腩焯水，西红柿去皮切块","炒香姜、洋葱，下牛腩翻炒","下西红柿炒软，加生抽、番茄酱和热水炖60分钟","加盐调味，收浓汤汁"]},
+  {id:12,name:"番茄鱼片",veg:"西红柿",protein:"草鱼",cat:"水产类",taste:"酸甜鲜美",ingredients:["草鱼片400克","西红柿3个","姜2片","葱1根"],seasonings:["盐适量","料酒1勺","淀粉1勺","番茄酱1勺","食用油适量"],steps:["鱼片加盐、料酒、淀粉抓匀","西红柿炒出汁，加番茄酱和水煮开","逐片下鱼片煮至变白","加盐调味，撒葱花"]},
+  {id:13,name:"白萝卜烧牛腩",veg:"白萝卜",protein:"牛腩",cat:"畜禽肉类",taste:"清甜浓郁",ingredients:["牛腩500克","白萝卜1根","姜3片","蒜2瓣"],seasonings:["生抽2勺","老抽1勺","料酒1勺","八角1个","盐适量","食用油适量"],steps:["牛腩焯水切块，白萝卜切块","炒香姜蒜，下牛腩翻炒","加生抽、老抽、料酒、八角和热水炖50分钟","下白萝卜再炖20分钟，加盐收汁"]},
+  {id:14,name:"萝卜炖羊肉",veg:"白萝卜",protein:"羊肉",cat:"畜禽肉类",taste:"温补鲜香",ingredients:["羊肉500克","白萝卜1根","姜4片","葱2段","香菜少许"],seasonings:["料酒1勺","白胡椒粉适量","盐适量"],steps:["羊肉切块焯水，白萝卜切块","羊肉、姜、葱入锅加水炖50分钟","下白萝卜再炖20分钟","加盐、白胡椒粉调味，撒香菜"]},
+  {id:15,name:"萝卜排骨汤",veg:"白萝卜",protein:"排骨",cat:"畜禽肉类",taste:"清甜",ingredients:["排骨500克","白萝卜1根","姜3片","枸杞少许"],seasonings:["盐适量","料酒1勺"],steps:["排骨焯水，白萝卜切块","排骨、姜片加水大火煮开转小火炖40分钟","下白萝卜炖20分钟","加盐、枸杞调味"]},
+  {id:16,name:"胡萝卜炒牛肉",veg:"胡萝卜",protein:"牛肉",cat:"畜禽肉类",taste:"咸鲜",ingredients:["牛肉片250克","胡萝卜1根","蒜2瓣"],seasonings:["生抽1勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],steps:["牛肉片加生抽、料酒、淀粉腌10分钟","热油滑炒牛肉盛出","下胡萝卜丝炒软","倒回牛肉，加蚝油、盐炒匀"]},
+  {id:17,name:"鱼香肉丝",veg:"胡萝卜",protein:"猪肉",cat:"畜禽肉类",taste:"鱼香微辣",ingredients:["猪里脊200克","胡萝卜半根","青椒1个","木耳少许","蒜2瓣"],seasonings:["生抽1勺","醋1勺","白糖1勺","豆瓣酱1勺","淀粉1勺","食用油适量"],steps:["肉丝加淀粉、生抽腌10分钟","调鱼香汁：生抽、醋、糖、淀粉和水拌匀","炒散肉丝盛出，下豆瓣酱、蒜炒香","下配菜炒断生，倒回肉丝，淋鱼香汁炒匀"]},
+  {id:18,name:"肉末茄子",veg:"茄子",protein:"肉末",cat:"畜禽肉类",taste:"咸香软烂",ingredients:["长茄子2根","猪肉末150克","蒜3瓣","葱1根"],seasonings:["生抽1勺","蚝油1勺","白糖半勺","盐少许","食用油适量"],steps:["茄子切条，用盐略腌挤水","热油炒散肉末至变色，下蒜末炒香","下茄子翻炒至软","加生抽、蚝油、白糖调味，撒葱花"]},
+  {id:19,name:"冬瓜炒虾仁",veg:"冬瓜",protein:"虾",cat:"水产类",taste:"清淡鲜美",ingredients:["冬瓜300克","虾仁200克","蒜2瓣","葱1根"],seasonings:["盐适量","料酒1勺","淀粉1勺","食用油适量"],steps:["虾仁加料酒、淀粉腌10分钟","热油滑炒虾仁盛出","下冬瓜片炒软，加少许水焖2分钟","倒回虾仁，加盐炒匀，撒葱花"]},
+  {id:20,name:"冬瓜排骨汤",veg:"冬瓜",protein:"排骨",cat:"畜禽肉类",taste:"清甜解腻",ingredients:["排骨500克","冬瓜400克","姜3片"],seasonings:["盐适量","料酒1勺"],steps:["排骨焯水，冬瓜切块","排骨、姜片加水炖40分钟","下冬瓜再炖15分钟","加盐调味"]},
+  {id:21,name:"冬瓜老鸭汤",veg:"冬瓜",protein:"鸭肉",cat:"畜禽肉类",taste:"清润",ingredients:["老鸭半只","冬瓜400克","姜4片"],seasonings:["盐适量","料酒1勺"],steps:["鸭肉切块焯水，冬瓜切块","鸭肉、姜片加水炖60分钟","下冬瓜再炖20分钟","加盐调味"]},
+  {id:22,name:"豆角炒肉",veg:"豆角",protein:"猪肉",cat:"畜禽肉类",taste:"咸鲜",ingredients:["豆角300克","猪肉片200克","蒜3瓣"],seasonings:["生抽1勺","蚝油1勺","盐适量","食用油适量"],steps:["豆角切段，猪肉切片","热油炒散肉片至变色盛出","下蒜末、豆角翻炒，加少许水焖熟","倒回肉片，加生抽、蚝油、盐炒匀"]},
+  {id:23,name:"肉末炒豆角",veg:"豆角",protein:"肉末",cat:"畜禽肉类",taste:"咸香",ingredients:["豆角300克","猪肉末150克","蒜3瓣","小米椒1个"],seasonings:["生抽1勺","蚝油1勺","盐少许","食用油适量"],steps:["豆角切丁焯水","炒散肉末，下蒜末、小米椒炒香","下豆角翻炒至熟","加生抽、蚝油、盐调味"]},
+  {id:24,name:"干锅花菜",veg:"花菜",protein:"五花肉",cat:"畜禽肉类",taste:"香辣干香",ingredients:["花菜1棵","五花肉150克","蒜3瓣","青蒜1根","干辣椒3个"],seasonings:["生抽1勺","豆瓣酱1勺","盐少许","食用油适量"],steps:["花菜掰小朵，焯水沥干","五花肉煸出油，下豆瓣酱、蒜、干辣椒炒香","下花菜大火翻炒","加生抽、盐、青蒜炒匀"]},
+  {id:25,name:"花菜炒虾仁",veg:"花菜",protein:"虾",cat:"水产类",taste:"清淡鲜美",ingredients:["花菜1棵","虾仁200克","蒜2瓣"],seasonings:["盐适量","料酒1勺","淀粉1勺","食用油适量"],steps:["花菜掰小朵焯水，虾仁加料酒、淀粉腌10分钟","炒虾仁至变色盛出","下蒜末、花菜翻炒","倒回虾仁，加盐炒匀"]},
+  {id:26,name:"莲藕排骨汤",veg:"莲藕",protein:"排骨",cat:"畜禽肉类",taste:"清甜",ingredients:["排骨500克","莲藕1节","姜3片"],seasonings:["盐适量","料酒1勺"],steps:["排骨焯水，莲藕切块","排骨、莲藕、姜片加水炖50分钟","加盐调味"]},
+  {id:27,name:"莲藕炒肉片",veg:"莲藕",protein:"猪肉",cat:"畜禽肉类",taste:"爽脆咸鲜",ingredients:["莲藕1节","猪肉片200克","蒜2瓣","葱1根"],seasonings:["生抽1勺","盐适量","食用油适量"],steps:["莲藕切片焯水，猪肉切片","热油炒肉片至变色","下蒜末、莲藕翻炒","加生抽、盐炒匀，撒葱花"]},
+  {id:28,name:"西芹炒牛肉",veg:"西芹",protein:"牛肉",cat:"畜禽肉类",taste:"清香脆嫩",ingredients:["牛肉片250克","西芹2根","蒜2瓣"],seasonings:["生抽1勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],steps:["牛肉片加生抽、料酒、淀粉腌10分钟","热油滑炒牛肉盛出","下蒜末、西芹段炒至断生","倒回牛肉，加蚝油、盐炒匀"]},
+  {id:29,name:"西芹炒腐竹",veg:"西芹",protein:"腐竹",cat:"豆制品类",taste:"清爽",ingredients:["腐竹150克","西芹2根","胡萝卜半根","蒜2瓣"],seasonings:["生抽1勺","盐适量","食用油适量"],steps:["腐竹泡发切段，西芹切段焯水","热油下蒜末爆香","下西芹、胡萝卜翻炒","下腐竹，加生抽、盐炒匀"]},
+  {id:30,name:"韭菜炒鸡蛋",veg:"韭菜",protein:"鸡蛋",cat:"蛋品类",taste:"鲜香",ingredients:["韭菜1把","鸡蛋4个"],seasonings:["盐适量","食用油适量"],steps:["鸡蛋加盐打散，韭菜切段","热油炒鸡蛋至凝固盛出","下韭菜大火快炒","倒回鸡蛋炒匀"]},
+  {id:31,name:"韭菜炒香干",veg:"韭菜",protein:"豆干",cat:"豆制品类",taste:"咸香",ingredients:["豆干4片","韭菜1把","蒜2瓣"],seasonings:["生抽1勺","盐少许","食用油适量"],steps:["豆干切条，韭菜切段","热油下豆干煎至微黄","下蒜末、韭菜大火翻炒","加生抽、盐炒匀"]},
+  {id:32,name:"手撕包菜",veg:"包菜",protein:"五花肉",cat:"畜禽肉类",taste:"咸鲜微辣",ingredients:["包菜半棵","五花肉100克","蒜3瓣","干辣椒3个"],seasonings:["生抽1勺","醋半勺","盐适量","食用油适量"],steps:["包菜手撕成片，五花肉切薄片","五花肉煸出油，下蒜、干辣椒炒香","下包菜大火翻炒","加生抽、醋、盐炒匀"]},
+  {id:33,name:"黄瓜炒鸡蛋",veg:"黄瓜",protein:"鸡蛋",cat:"蛋品类",taste:"清爽",ingredients:["黄瓜1根","鸡蛋3个","蒜2瓣"],seasonings:["盐适量","食用油适量"],steps:["鸡蛋加盐打散，黄瓜切片","热油炒鸡蛋盛出","下蒜末、黄瓜翻炒","倒回鸡蛋，加盐炒匀"]},
+  {id:34,name:"黄瓜炒虾仁",veg:"黄瓜",protein:"虾",cat:"水产类",taste:"清鲜",ingredients:["黄瓜1根","虾仁200克","蒜2瓣"],seasonings:["盐适量","料酒1勺","淀粉1勺","食用油适量"],steps:["虾仁加料酒、淀粉腌10分钟","热油炒虾仁盛出","下蒜末、黄瓜翻炒","倒回虾仁，加盐炒匀"]},
+  {id:35,name:"黄瓜炒肉片",veg:"黄瓜",protein:"猪肉",cat:"畜禽肉类",taste:"清爽咸鲜",ingredients:["黄瓜1根","猪肉片200克","蒜2瓣"],seasonings:["生抽1勺","盐适量","食用油适量"],steps:["黄瓜切片，猪肉切片","热油炒肉片至变色","下蒜末、黄瓜翻炒","加生抽、盐炒匀"]},
+  {id:36,name:"莴笋炒肉",veg:"莴笋",protein:"猪肉",cat:"畜禽肉类",taste:"清脆",ingredients:["莴笋1根","猪肉片200克","蒜2瓣"],seasonings:["生抽1勺","盐适量","食用油适量"],steps:["莴笋去皮切片，猪肉切片","热油炒肉片至变色","下蒜末、莴笋翻炒","加生抽、盐炒匀"]},
+  {id:37,name:"杏鲍菇炒牛肉",veg:"杏鲍菇",protein:"牛肉",cat:"畜禽肉类",taste:"咸鲜",ingredients:["杏鲍菇2个","牛肉片250克","蒜2瓣"],seasonings:["生抽1勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],steps:["牛肉片加生抽、料酒、淀粉腌10分钟","热油滑炒牛肉盛出","下杏鲍菇片炒软","倒回牛肉，加蚝油、盐炒匀"]},
+  {id:38,name:"小炒杏鲍菇",veg:"杏鲍菇",protein:"猪肉",cat:"畜禽肉类",taste:"咸香",ingredients:["杏鲍菇2个","猪肉片150克","青椒1个","蒜2瓣"],seasonings:["生抽1勺","蚝油1勺","盐少许","食用油适量"],steps:["杏鲍菇切片，猪肉切片，青椒切块","热油炒肉片至变色","下蒜末、杏鲍菇炒软","下青椒，加生抽、蚝油、盐炒匀"]},
+  {id:39,name:"香菇滑鸡",veg:"香菇",protein:"鸡肉",cat:"畜禽肉类",taste:"鲜嫩",ingredients:["鸡腿肉400克","鲜香菇6朵","姜3片","葱1根"],seasonings:["生抽2勺","蚝油1勺","料酒1勺","淀粉1勺","食用油适量"],steps:["鸡肉切块，加生抽、蚝油、料酒、淀粉腌15分钟","香菇切片","热油下姜片、鸡块炒至变色","下香菇翻炒，加少许水焖8分钟，撒葱花"]},
+  {id:40,name:"鲜木耳炒鸡蛋",veg:"鲜木耳",protein:"鸡蛋",cat:"蛋品类",taste:"脆嫩",ingredients:["鲜木耳150克","鸡蛋3个","蒜2瓣"],seasonings:["盐适量","生抽半勺","食用油适量"],steps:["木耳撕小朵焯水，鸡蛋打散","热油炒鸡蛋盛出","下蒜末、木耳翻炒","倒回鸡蛋，加盐、生抽炒匀"]},
+  {id:41,name:"鲜木耳炒肉",veg:"鲜木耳",protein:"猪肉",cat:"畜禽肉类",taste:"咸鲜",ingredients:["鲜木耳150克","猪肉片200克","青椒1个","蒜2瓣"],seasonings:["生抽1勺","蚝油1勺","盐适量","食用油适量"],steps:["木耳撕小朵焯水，肉切片，青椒切块","热油炒肉片至变色","下蒜末、木耳、青椒翻炒","加生抽、蚝油、盐炒匀"]},
+  {id:42,name:"毛豆炒肉末",veg:"毛豆",protein:"猪肉",cat:"畜禽肉类",taste:"咸香",ingredients:["毛豆200克","猪肉末150克","蒜2瓣","小米椒1个"],seasonings:["生抽1勺","蚝油1勺","盐少许","食用油适量"],steps:["毛豆焯水，肉末炒散","下蒜末、小米椒炒香","下毛豆翻炒至熟","加生抽、蚝油、盐调味"]},
+  {id:43,name:"蒜苔炒肉",veg:"蒜苔",protein:"猪肉",cat:"畜禽肉类",taste:"咸鲜",ingredients:["蒜苔1把","猪肉片200克","蒜2瓣"],seasonings:["生抽1勺","蚝油1勺","盐适量","食用油适量"],steps:["蒜苔切段，猪肉切片","热油炒肉片至变色盛出","下蒜末、蒜苔翻炒至断生","倒回肉片，加生抽、蚝油、盐炒匀"]},
+  {id:44,name:"蒜苔炒鸡蛋",veg:"蒜苔",protein:"鸡蛋",cat:"蛋品类",taste:"鲜香",ingredients:["蒜苔1把","鸡蛋3个"],seasonings:["盐适量","食用油适量"],steps:["蒜苔切段，鸡蛋打散","热油炒鸡蛋盛出","下蒜苔翻炒至熟","倒回鸡蛋，加盐炒匀"]},
+  {id:45,name:"芹菜炒牛肉",veg:"芹菜",protein:"牛肉",cat:"畜禽肉类",taste:"清香",ingredients:["牛肉片250克","芹菜1把","蒜2瓣"],seasonings:["生抽1勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],steps:["牛肉片加生抽、料酒、淀粉腌10分钟","热油滑炒牛肉盛出","下蒜末、芹菜段炒至断生","倒回牛肉，加蚝油、盐炒匀"]},
+  {id:46,name:"芹菜炒香干",veg:"芹菜",protein:"豆干",cat:"豆制品类",taste:"咸香",ingredients:["豆干4片","芹菜1把","蒜2瓣"],seasonings:["生抽1勺","盐少许","食用油适量"],steps:["豆干切条，芹菜切段","热油下豆干煎至微黄","下蒜末、芹菜翻炒","加生抽、盐炒匀"]},
+  {id:47,name:"西兰花炒虾仁",veg:"西兰花",protein:"虾",cat:"水产类",taste:"清淡",ingredients:["西兰花1棵","虾仁200克","蒜2瓣"],seasonings:["盐适量","料酒1勺","淀粉1勺","食用油适量"],steps:["西兰花掰小朵焯水，虾仁加料酒、淀粉腌10分钟","热油炒虾仁盛出","下蒜末、西兰花翻炒","倒回虾仁，加盐炒匀"]},
+  {id:48,name:"西兰花炒牛肉",veg:"西兰花",protein:"牛肉",cat:"畜禽肉类",taste:"咸鲜",ingredients:["西兰花1棵","牛肉片250克","蒜2瓣"],seasonings:["生抽1勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],steps:["西兰花焯水，牛肉片加生抽、料酒、淀粉腌10分钟","热油滑炒牛肉盛出","下蒜末、西兰花翻炒","倒回牛肉，加蚝油、盐炒匀"]},
+  {id:49,name:"白菜炒肉",veg:"大白菜",protein:"猪肉",cat:"畜禽肉类",taste:"家常咸鲜",ingredients:["大白菜半棵","猪肉片200克","蒜2瓣"],seasonings:["生抽1勺","盐适量","食用油适量"],steps:["白菜切片，肉切片","热油炒肉片至变色","下蒜末、白菜帮翻炒，再下菜叶","加生抽、盐炒匀"]},
+  {id:50,name:"白菜炖豆腐",veg:"大白菜",protein:"豆腐",cat:"豆制品类",taste:"清淡",ingredients:["大白菜半棵","豆腐1块","葱1根"],seasonings:["盐适量","生抽半勺","食用油适量"],steps:["白菜切片，豆腐切块","热油下豆腐煎至微黄盛出","下白菜翻炒至软，加少许水","放回豆腐炖5分钟，加盐、生抽调味"]},
+  {id:51,name:"香辣鸡丁",veg:"辣椒",protein:"鸡肉",cat:"畜禽肉类",taste:"香辣",ingredients:["鸡腿肉400克","辣椒2个","蒜3瓣","干辣椒4个"],seasonings:["生抽1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],steps:["鸡肉切丁，加生抽、料酒、淀粉腌15分钟","热油炒鸡丁至变色盛出","爆香蒜、干辣椒、辣椒","倒回鸡丁，加盐炒匀"]},
+  {id:52,name:"豆角炒鸡蛋",veg:"豆角",protein:"鸡蛋",cat:"蛋品类",taste:"鲜香",ingredients:["豆角250克","鸡蛋3个","蒜2瓣"],seasonings:["盐适量","食用油适量"],steps:["豆角切丁焯水，鸡蛋打散","热油炒鸡蛋盛出","下蒜末、豆角炒熟","倒回鸡蛋，加盐炒匀"]},
+  {id:53,name:"莲藕焖猪脚",veg:"莲藕",protein:"猪脚",cat:"畜禽肉类",taste:"浓郁",ingredients:["猪脚500克","莲藕1节","姜3片"],seasonings:["生抽2勺","老抽1勺","料酒1勺","冰糖5粒","盐适量","食用油适量"],steps:["猪脚焯水，莲藕切块","炒糖色后下猪脚翻炒上色","加姜、生抽、老抽、料酒和热水炖60分钟","下莲藕再炖20分钟，加盐收汁"]},
+  {id:54,name:"毛豆炒虾仁",veg:"毛豆",protein:"虾",cat:"水产类",taste:"清淡鲜美",ingredients:["毛豆200克","虾仁200克","蒜2瓣"],seasonings:["盐适量","料酒1勺","淀粉1勺","食用油适量"],steps:["毛豆焯水，虾仁加料酒、淀粉腌10分钟","热油炒虾仁盛出","下蒜末、毛豆翻炒","倒回虾仁，加盐炒匀"]},
 
-  function renderMenu(){
-    const start = new Date($('#weekStart').value + 'T00:00:00');
-    const rows=[];
-    for(let i=0;i<7;i++){ const d=new Date(start); d.setDate(start.getDate()+i); const label=(d.getMonth()+1)+'/'+d.getDate()+' '+WEEK[i];
-      for(let m=0;m<2;m++){ const s=i*2+m; const meal=m===0?'午餐':'晚餐';
-        const cells='<td class="meal">'+meal+'</td><td contenteditable="true">'+esc(week.spicyMain[s])+'</td><td contenteditable="true">'+esc(week.spicySide[s])+'</td><td contenteditable="true">'+esc(week.cantoMain[s])+'</td><td contenteditable="true">'+esc(week.cantoSide[s])+'</td><td contenteditable="true">'+esc(week.green[s])+'</td><td contenteditable="true">'+esc(week.soup[s])+'</td><td contenteditable="true">'+esc(week.staple[s])+'</td>';
-        if(m===0){ rows.push('<tr><td class="day" rowspan="2">'+label+'</td>'+cells+'<td class="side" contenteditable="true" rowspan="2">'+esc(week.sideDish[i*2])+'<br>'+esc(week.sideDish[i*2+1])+'</td></tr>'); }
-        else { rows.push('<tr>'+cells+'</tr>'); } } }
-    $('#menuBody').innerHTML = rows.join('');
-    const ing = CATEGORIES.reduce((s,c)=>s+c.items.length,0);
-    $('#metrics').innerHTML = '<div class="metric"><div class="num">105</div><div class="lbl">本周菜品</div></div><div class="metric"><div class="num">'+RECIPES.length+'</div><div class="lbl">菜谱</div></div><div class="metric"><div class="num">'+ing+'</div><div class="lbl">食材</div></div><div class="metric"><div class="num">100%</div><div class="lbl">荤素菜去重</div></div>';
-    $('#sideList').textContent = SIDES.join('、');
+  {id:55,name:"白萝卜炖牛杂",veg:"白萝卜",protein:"牛杂",cat:"畜禽肉类",taste:"浓郁鲜香",ingredients:["牛杂500克","白萝卜1根","姜4片","葱2段","香叶2片"],seasonings:["生抽1勺","老抽半勺","料酒2勺","八角1个","盐适量","食用油适量"],steps:["牛杂清洗焯水，切块；白萝卜切块","炒香姜葱，下牛杂翻炒","加生抽、老抽、料酒、八角和热水炖50分钟","下白萝卜再炖20分钟，加盐收汁"]},
+  {id:56,name:"香辣牛杂",veg:"辣椒",protein:"牛杂",cat:"畜禽肉类",taste:"香辣",ingredients:["熟牛杂400克","辣椒2个","蒜3瓣","干辣椒4个"],seasonings:["生抽1勺","蚝油1勺","盐少许","食用油适量"],steps:["牛杂切片，辣椒切段","爆香蒜、干辣椒","下牛杂大火翻炒2分钟","下辣椒，加生抽、蚝油、盐炒匀"]},
+  {id:57,name:"辣椒炒瘦肉",veg:"辣椒",protein:"瘦肉",cat:"畜禽肉类",taste:"咸鲜下饭",ingredients:["猪瘦肉300克","辣椒2个","蒜3瓣"],seasonings:["生抽2勺","蚝油1勺","料酒1勺","淀粉1勺","盐适量","食用油适量"],steps:["瘦肉切片，加生抽、料酒、淀粉抓匀腌10分钟","热油滑炒瘦肉至变色盛出","下蒜末、辣椒炒至断生","倒回瘦肉，加蚝油、盐炒匀"]},
+  {id:58,name:"蒜苔炒瘦肉",veg:"蒜苔",protein:"瘦肉",cat:"畜禽肉类",taste:"清脆咸鲜",ingredients:["猪瘦肉250克","蒜苔1把","蒜2瓣"],seasonings:["生抽1勺","蚝油1勺","盐适量","食用油适量"],steps:["瘦肉切丝，蒜苔切段","热油炒瘦肉至变色盛出","下蒜末、蒜苔炒至断生","倒回瘦肉，加生抽、蚝油、盐炒匀"]},
+  {id:59,name:"黑椒洋葱炒猪扒",veg:"洋葱",protein:"猪扒",cat:"畜禽肉类",taste:"黑椒咸香",ingredients:["猪扒肉300克","洋葱1个","青椒1个","蒜2瓣"],seasonings:["生抽1勺","蚝油1勺","黑胡椒碎适量","料酒1勺","淀粉1勺","盐少许","食用油适量"],steps:["猪扒肉切条，加生抽、料酒、淀粉抓匀腌10分钟","热油炒猪扒至变色盛出","下蒜末、洋葱炒香","倒回猪扒和青椒，加蚝油、黑胡椒碎、盐炒匀"]},
+  {id:60,name:"红油黄瓜拌猪耳",veg:"黄瓜",protein:"猪耳朵",cat:"畜禽肉类",taste:"红油香辣",ingredients:["熟猪耳朵1个","黄瓜1根","蒜3瓣","葱1根"],seasonings:["生抽1勺","香醋1勺","红油辣子2勺","白糖半勺","盐适量"],steps:["猪耳朵切薄片，黄瓜拍碎切段","蒜切末，葱切花","把猪耳、黄瓜、蒜末、葱花放大碗","加生抽、香醋、红油辣子、白糖、盐拌匀"]},
+  {id:61,name:"蒜苔炒猪脸肉",veg:"蒜苔",protein:"猪脸肉",cat:"畜禽肉类",taste:"咸香",ingredients:["卤猪脸肉300克","蒜苔1把","蒜2瓣","小米椒1个"],seasonings:["生抽1勺","盐少许","食用油适量"],steps:["猪脸肉切薄片，蒜苔切段","热油下猪脸肉煸炒出香","下蒜末、小米椒、蒜苔翻炒","加生抽、盐炒匀"]},
+  {id:62,name:"干煸肥肠",veg:"辣椒",protein:"肥肠",cat:"畜禽肉类",taste:"干香麻辣",ingredients:["熟肥肠400克","辣椒2个","干辣椒5个","花椒少许","蒜3瓣"],seasonings:["生抽1勺","盐适量","食用油适量"],steps:["肥肠切段，辣椒切块","少油下肥肠中小火煸至微焦出油","下干辣椒、花椒、蒜炒香","下辣椒，加生抽、盐翻炒均匀"]},
+  {id:63,name:"土豆焖猪手",veg:"土豆",protein:"猪手",cat:"畜禽肉类",taste:"软糯咸香",ingredients:["猪手1只","土豆2个","姜3片","蒜3瓣"],seasonings:["生抽2勺","老抽1勺","料酒1勺","冰糖5粒","盐适量","食用油适量"],steps:["猪手剁块焯水，土豆切块","炒糖色后下猪手翻炒上色","加姜蒜、生抽、老抽、料酒和热水炖50分钟","下土豆再炖20分钟，加盐收汁"]}
+];
+
+
+/* ============ 菜系分类：辣菜 / 粤菜 / 小菜 ============ */
+const STYLE_MAP = {
+1:"辣菜",2:"辣菜",3:"粤菜",4:"辣菜",5:"辣菜",6:"粤菜",7:"粤菜",8:"辣菜",9:"粤菜",10:"粤菜",
+11:"粤菜",12:"粤菜",13:"粤菜",14:"粤菜",15:"粤菜",16:"粤菜",17:"辣菜",18:"辣菜",19:"粤菜",20:"粤菜",
+21:"粤菜",22:"粤菜",23:"粤菜",24:"辣菜",25:"粤菜",26:"粤菜",27:"粤菜",28:"粤菜",29:"粤菜",30:"粤菜",
+31:"粤菜",32:"辣菜",33:"粤菜",34:"粤菜",35:"粤菜",36:"粤菜",37:"粤菜",38:"粤菜",39:"粤菜",40:"粤菜",
+41:"粤菜",42:"粤菜",43:"粤菜",44:"粤菜",45:"粤菜",46:"粤菜",47:"粤菜",48:"粤菜",49:"粤菜",50:"粤菜",
+51:"辣菜",52:"粤菜",53:"粤菜",54:"粤菜",55:"粤菜",56:"辣菜",57:"辣菜",58:"粤菜",59:"粤菜",60:"辣菜",
+61:"粤菜",62:"辣菜",63:"粤菜"
+};
+
+const DISH_STYLE = {
+"红烧肉":"粤菜","金牌烤鸭":"粤菜","椒盐虾":"粤菜","卤水鸭":"粤菜","葱油猪手":"粤菜","小炒牛肉":"辣菜","白灼虾":"粤菜","萝卜炖羊肉":"粤菜","粉蒸肉":"粤菜","啤酒鸭":"粤菜","土豆烧排骨":"粤菜","红烧鸡块":"粤菜","糖醋里脊":"粤菜","剁椒鱼块":"辣菜","香菇滑鸡":"粤菜","清蒸鲈鱼":"粤菜","红烧草鱼":"粤菜","蒜香骨":"粤菜","椒盐海鱼":"粤菜","水煮鱼片":"辣菜","西红柿炖牛腩":"粤菜","回锅肉":"辣菜","农家小炒肉":"辣菜","干煸鸭":"辣菜","红烧肉丸":"粤菜","豉香鱼块":"粤菜",
+"肉末蒸蛋":"粤菜","鱼香茄子":"辣菜","麻婆豆腐":"辣菜","家常豆腐":"辣菜","青椒炒蛋":"小菜","西红柿炒蛋":"粤菜","韭菜炒蛋":"小菜","酸辣土豆丝":"辣菜","清炒藕片":"小菜","干锅花菜":"辣菜","西兰花":"粤菜","青瓜口蘑":"粤菜","鲜木耳炒蛋":"小菜","黄瓜炒蛋":"小菜","青椒炒香干":"小菜","芹菜炒香干":"小菜","西芹炒腐竹":"小菜","莴笋炒肉":"粤菜","蒜苔炒肉":"粤菜","豆角炒肉":"粤菜","冬瓜炒虾仁":"粤菜","西兰花炒虾仁":"粤菜","杏鲍菇炒牛肉":"粤菜","包菜粉丝":"粤菜","木耳炒肉":"粤菜","蚂蚁上树":"辣菜",
+"清炒时蔬":"小菜","蒜蓉油麦菜":"小菜","清炒小白菜":"小菜","手撕包菜":"辣菜","蒜蓉菠菜":"小菜","醋溜大白菜":"小菜","清炒莴笋丝":"小菜","清炒长豆角":"小菜","清炒毛豆粒":"小菜","凉拌黄瓜":"小菜","青椒土豆丝":"小菜","蒜蓉丝瓜":"小菜","清炒南瓜":"小菜","清炒豆芽":"小菜"
+};
+
+
+/* ============ 菜品分类：大荤 / 小荤 / 素菜 / 青菜 / 汤 / 主食 / 小菜 ============ */
+const DISH_TYPE_MAP = {
+1:"大荤",2:"大荤",3:"小荤",4:"小荤",5:"大荤",6:"大荤",7:"大荤",8:"大荤",9:"大荤",10:"小荤",
+11:"大荤",12:"大荤",13:"大荤",14:"大荤",15:"汤",16:"大荤",17:"大荤",18:"小荤",19:"大荤",20:"汤",
+21:"汤",22:"小荤",23:"小荤",24:"小荤",25:"大荤",26:"汤",27:"小荤",28:"小荤",29:"小荤",30:"小荤",
+31:"小荤",32:"小荤",33:"小荤",34:"大荤",35:"小荤",36:"小荤",37:"小荤",38:"小荤",39:"大荤",40:"小荤",
+41:"小荤",42:"小荤",43:"小荤",44:"小荤",45:"小荤",46:"小荤",47:"大荤",48:"小荤",49:"小荤",50:"素菜",
+51:"大荤",52:"小荤",53:"大荤",54:"大荤",55:"大荤",56:"大荤",57:"大荤",58:"小荤",59:"大荤",60:"小荤",
+61:"小荤",62:"大荤",63:"大荤"
+};
+function dishTypeOf(r){ return DISH_TYPE_MAP[r.id] || "大荤"; }
+function typeTag(type){ return `<span class="tag tag-type">${type}</span>`; }
+
+function styleOfRecipe(r){ return STYLE_MAP[r.id] || "粤菜"; }
+function dishStyle(name){ return DISH_STYLE[name] || (/(辣|剁椒|麻婆|回锅|农家小炒|水煮|干煸|香辣|酸辣|泡椒|干锅|豆瓣)/.test(name) ? "辣菜" : /(凉拌|拌|卤|泡|咸菜|蒜蓉|清炒|醋溜|白灼|韭菜|青瓜|毛豆|豆芽|南瓜|丝瓜|菠菜|小白菜|油麦菜|大白菜)/.test(name) ? "小菜" : "粤菜"); }
+function styleTag(style){ const cls = style==="辣菜"?"tag-spicy":style==="粤菜"?"tag-canto":"tag-side"; return `<span class="tag ${cls}">${style}</span>`; }
+
+/* ============ 本周菜单素材池（同一菜别内部去重） ============ */
+const MENU_POOLS = {
+  spicyMain:["小炒牛肉","剁椒鱼块","水煮鱼片","回锅肉","农家小炒肉","干煸鸭","辣子鸡","香辣虾","剁椒蒸皖鱼","泡椒牛肉","麻辣猪耳","口水鸡","辣椒炒肉","香辣牛杂"],
+  cantoMain:["红烧肉","金牌烤鸭","椒盐虾","卤水鸭","葱油猪手","白灼虾","萝卜炖羊肉","粉蒸肉","啤酒鸭","土豆烧排骨","红烧鸡块","糖醋里脊","香菇滑鸡","清蒸鲈鱼","红烧草鱼","蒜香骨","椒盐海鱼","西红柿炖牛腩","红烧肉丸","豉香鱼块"],
+  spicySide:["鱼香茄子","麻婆豆腐","家常豆腐","酸辣土豆丝","干锅花菜","蚂蚁上树","青椒土豆丝","酸辣青瓜","干煸四季豆","炝炒莴笋丝","干锅包菜","酸辣藕丁","口味长豆角","红椒炒双花"],
+  cantoSide:["肉末蒸蛋","西红柿炒蛋","韭菜炒蛋","清炒藕片","西兰花","青瓜口蘑","鲜木耳炒蛋","黄瓜炒蛋","青椒炒香干","芹菜炒香干","西芹炒腐竹","莴笋炒肉","蒜苔炒肉","豆角炒肉","冬瓜炒虾仁","西兰花炒虾仁","杏鲍菇炒牛肉","包菜粉丝","木耳炒肉"],
+  green:["清炒青菜","蒜蓉油麦菜","清炒小白菜","蒜蓉生菜","清炒菠菜","醋溜大白菜","白灼菜心","蒜蓉上海青","清炒空心菜","清炒娃娃菜","蒜蓉西兰花","清炒豆苗","蒜蓉芥蓝","上汤苋菜"],
+  soup:["冬瓜大骨汤","白萝卜筒子骨汤","玉米棒大骨汤","虫草花鸡汤","冬瓜龙骨汤","紫菜蛋花汤","西红柿蛋汤","莲藕排骨汤","冬瓜老鸭汤","海带排骨汤","玉米排骨汤","丝瓜蛋汤","番茄豆腐汤","绿豆汤"],
+  staple:["老面馒头","白米饭","葱花卷","红糖馒头","窝窝头","手工水饺","蒸红薯","玉米棒","奶香馒头","花卷","杂粮饭","葱油饼","扬州炒饭","豆沙包"],
+  sideDish:["红油萝卜丁","剁辣椒","红油榨菜丝","青剁椒","脆黄瓜条","红油洋姜","外婆菜","酸豆角","泡椒笋","酱萝卜","辣子面","红油酸豆角","凉拌海带丝","蒜蓉辣酱"]
+};
+
+/* 常用搭配快速入口 */
+const QUICK_PAIRS = [
+  {veg:"辣椒",protein:"牛肉",label:"辣椒 × 牛肉"},
+  {veg:"西红柿",protein:"鸡蛋",label:"西红柿 × 鸡蛋"},
+  {veg:"土豆",protein:"排骨",label:"土豆 × 排骨"},
+  {veg:"白萝卜",protein:"牛腩",label:"白萝卜 × 牛腩"},
+  {veg:"冬瓜",protein:"虾",label:"冬瓜 × 虾仁"},
+  {veg:"茄子",protein:"肉末",label:"茄子 × 肉末"},
+  {veg:"白萝卜",protein:"牛杂",label:"白萝卜 × 牛杂"},
+  {veg:"辣椒",protein:"肥肠",label:"辣椒 × 肥肠"}
+];
+/* ============ 工具函数 ============ */
+const $ = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
+  return a;
+}
 
-  function fillPair(){ const vegs=[...new Set(RECIPES.map(r=>r.veg))]; const pros=[...new Set(RECIPES.map(r=>r.protein))];
-    $('#vegSelect').innerHTML = vegs.map(v=>'<option>'+esc(v)+'</option>').join('');
-    $('#proteinSelect').innerHTML = pros.map(p=>'<option>'+esc(p)+'</option>').join('');
-    $('#vegSelect').value = vegs.includes('辣椒')?'辣椒':vegs[0]; $('#proteinSelect').value = pros.includes('牛肉')?'牛肉':pros[0]; }
+function toISO(d){
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,'0');
+  const day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
 
-  function renderPair(){
-    const veg=$('#vegSelect').value, pro=$('#proteinSelect').value;
-    const box=$('#pairResult'); const hits=RECIPES.filter(r=>r.veg===veg && r.protein===pro);
-    if(!hits.length){ box.innerHTML='<div class="note">没有找到「'+esc(veg)+' × '+esc(pro)+'」的固定搭配。</div>'; return; }
-    box.innerHTML = hits.map(r=>{ const st=styleOf(r), dt=typeOf(r);
-      return '<div class="recipe"><h3>'+esc(r.name)+' <span class="tag dt">'+dt+'</span> <span class="tag '+(st==='辣菜'?'st-spicy':'st-canto')+'">'+st+'</span> <span class="muted">'+esc(r.taste)+'</span></h3><p><b>配料：</b>'+esc(r.ingredients.join('、'))+'</p><p><b>调料：</b>'+esc(r.seasonings.join('、'))+'</p><ol>'+r.steps.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ol></div>';
-    }).join('');
+function nextMonday(){
+  const d = new Date();
+  const dow = (d.getDay()+6)%7; // 周一=0
+  d.setDate(d.getDate()-dow+7);
+  return d;
+}
+
+function md(d){
+  return `${d.getMonth()+1}/${d.getDate()}`;
+}
+
+/* ============ 本周菜单 ============ */
+const WEEK_NAMES = ["周一","周二","周三","周四","周五","周六","周日"];
+const state = { week:null };
+const DEFAULT_FIXED_SIDES = ["红油萝卜丁","剁辣椒","红油榨菜丝","酸豆角"];
+function parseSides(raw){
+  const arr = (raw||'').split(/[、,，;；\n]+/).map(x=>x.trim()).filter(Boolean);
+  return arr.length ? arr : [...DEFAULT_FIXED_SIDES];
+}
+function getFixedSides(){
+  try { const raw = localStorage.getItem('fixedSides'); return raw ? parseSides(raw) : [...DEFAULT_FIXED_SIDES]; }
+  catch(e){ return [...DEFAULT_FIXED_SIDES]; }
+}
+
+function buildWeek(){
+  const n=14;
+  const sides = getFixedSides();
+  state.week = {
+    spicyMain: shuffle(MENU_POOLS.spicyMain).slice(0,n),
+    cantoMain: shuffle(MENU_POOLS.cantoMain).slice(0,n),
+    spicySide: shuffle(MENU_POOLS.spicySide).slice(0,n),
+    cantoSide: shuffle(MENU_POOLS.cantoSide).slice(0,n),
+    green: shuffle(MENU_POOLS.green).slice(0,n),
+    soup: shuffle(MENU_POOLS.soup).slice(0,n),
+    staple: shuffle(MENU_POOLS.staple).slice(0,n),
+    sideDish: Array.from({length:14}, (_,k)=> sides[k % sides.length])
+  };
+}
+
+function renderMenu(){
+  const start = new Date($('#weekStart').value + 'T00:00:00');
+  if(!state.week) buildWeek();
+  const w = state.week;
+  const rows = [];
+  for(let i=0;i<7;i++){
+    const d = new Date(start); d.setDate(start.getDate()+i);
+    const dateLabel = `${md(d)} ${WEEK_NAMES[i]}`;
+    for(let m=0;m<2;m++){
+      const s = i*2+m;
+      const meal = m===0 ? '午餐' : '晚餐';
+      const cells = `
+        <td class="meal">${meal}</td>
+        <td class="dish spicy" contenteditable="true">${w.spicyMain[s]}</td>
+        <td class="dish spicy" contenteditable="true">${w.spicySide[s]}</td>
+        <td class="dish canto" contenteditable="true">${w.cantoMain[s]}</td>
+        <td class="dish canto" contenteditable="true">${w.cantoSide[s]}</td>
+        <td class="dish" contenteditable="true">${w.green[s]}</td>
+        <td class="dish" contenteditable="true">${w.soup[s]}</td>
+        <td class="dish" contenteditable="true">${w.staple[s]}</td>`;
+      if(m===0){
+        rows.push(`<tr><td class="day-title" rowspan="2">${dateLabel}</td>${cells}<td class="dish side" contenteditable="true" rowspan="2">${w.sideDish[i*2]}<br>${w.sideDish[i*2+1]}</td></tr>`);
+      } else {
+        rows.push(`<tr>${cells}</tr>`);
+      }
+    }
   }
-  function renderRecipes(){
-    const q=$('#recipeSearch').value.trim().toLowerCase(), cat=$('#catFilter').value, st=$('#styleFilter').value, dt=$('#typeFilter').value;
-    let list=RECIPES.filter(r=>{ const s=styleOf(r), t=typeOf(r); const hay=(r.name+' '+r.veg+' '+r.protein+' '+r.cat+' '+s+' '+t+' '+r.taste+' '+r.ingredients.join(' ')+' '+r.seasonings.join(' ')).toLowerCase();
-      return (!q||hay.includes(q)) && (!cat||r.cat===cat) && (!st||s===st) && (!dt||t===dt); });
-    $('#recipeList').innerHTML = list.map(r=>{ const s=styleOf(r), t=typeOf(r);
-      return '<details class="recipe"><summary>'+esc(r.name)+' <span class="tag dt">'+t+'</span> <span class="tag '+(s==='辣菜'?'st-spicy':'st-canto')+'">'+s+'</span> <span class="muted">'+esc(r.veg)+' × '+esc(r.protein)+' · '+esc(r.cat)+' · '+esc(r.taste)+'</span></summary><p><b>配料：</b>'+esc(r.ingredients.join('、'))+'</p><p><b>调料：</b>'+esc(r.seasonings.join('、'))+'</p><ol>'+r.steps.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol></details>';
-    }).join('') || '<div class="note">没有匹配的菜谱。</div>';
+  $('#menuBody').innerHTML = rows.join('');
+  renderMetrics();
+}
+
+function renderMetrics(){
+  const totalIng = CATEGORIES.reduce((s,c)=>s+c.items.length,0);
+  $('#metrics').innerHTML = [
+    {num:112, lbl:'本周菜品（14餐×辣/粤双线+每日2咸菜）'},
+    {num:RECIPES.length, lbl:'可生成做法与配料的菜谱'},
+    {num:totalIng, lbl:'六大类食材总数'},
+    {num:'100%', lbl:'荤素菜去重率'}
+  ].map(m=>`<div class="card metric"><div class="num">${m.num}</div><div class="lbl">${m.lbl}</div></div>`).join('');
+}
+
+$('#btnGenerate').addEventListener('click', ()=>{ buildWeek(); renderMenu(); });
+$('#btnRegen').addEventListener('click', ()=>{ buildWeek(); renderMenu(); });
+$('#btnPrint').addEventListener('click', ()=> window.print());
+$('#fixedSidesInput').addEventListener('change', ()=>{ try{ localStorage.setItem('fixedSides', $('#fixedSidesInput').value); }catch(e){} buildWeek(); renderMenu(); });
+
+/* ============ 智能配菜 ============ */
+function uniqueVegs(){ return [...new Set(RECIPES.map(r=>r.veg))]; }
+function uniqueProteins(){ return [...new Set(RECIPES.map(r=>r.protein))]; }
+function proteinsForVeg(veg){ return [...new Set(RECIPES.filter(r=>r.veg===veg).map(r=>r.protein))]; }
+function vegsForProtein(protein){ return [...new Set(RECIPES.filter(r=>r.protein===protein).map(r=>r.veg))]; }
+
+function populateProteinSelect(veg){
+  const sel = $('#proteinSelect');
+  const prev = sel.value;
+  const proteins = veg ? proteinsForVeg(veg) : uniqueProteins();
+  const groups = ["畜禽肉类","水产类","蛋品类","豆制品类"];
+  sel.innerHTML = '';
+  groups.forEach(cat=>{
+    const list = proteins.filter(p=>RECIPES.find(r=>r.protein===p && r.cat===cat));
+    if(list.length){
+      const og = document.createElement('optgroup');
+      og.label = cat;
+      list.forEach(p=>{
+        const op = document.createElement('option');
+        op.value = p; op.textContent = p;
+        og.appendChild(op);
+      });
+      sel.appendChild(og);
+    }
+  });
+  if(proteins.includes(prev)) sel.value = prev; else if(proteins.length) sel.value = proteins[0];
+}
+
+function populateVegSelect(protein){
+  const sel = $('#vegSelect');
+  const prev = sel.value;
+  const vegs = protein ? vegsForProtein(protein) : uniqueVegs();
+  sel.innerHTML = '';
+  vegs.forEach(v=>{
+    const op = document.createElement('option');
+    op.value = v; op.textContent = v;
+    sel.appendChild(op);
+  });
+  if(vegs.includes(prev)) sel.value = prev; else if(vegs.length) sel.value = vegs[0];
+}
+
+function recipeCardHTML(r, {detail=false}={}){
+  const st = styleOfRecipe(r);
+  const dt = dishTypeOf(r);
+  const ings = r.ingredients.map(x=>`<span class="ing">${x}</span>`).join('');
+  const seas = r.seasonings.map(x=>`<span class="ing">${x}</span>`).join('');
+  const steps = r.steps.map((s,i)=>`<li>${s}</li>`).join('');
+  const head = detail ? `<button class="modal-close" id="modalClose">✕</button><h3>${r.name}</h3>` : `<h4>${r.name}</h4>`;
+  return `
+    <div class="recipe-card" data-id="${r.id}">
+      <div class="rc-head">
+        ${head}
+        <span class="tag-group">${typeTag(dt)}${styleTag(st)}<span class="taste">${r.taste}</span></span>
+      </div>
+      ${detail ? '' : `<div class="meta-line">🥬 ${r.veg} × 🍖 ${r.protein} · ${dt} · ${r.cat} · ${st}</div>`}
+      <div class="rc-sec"><h5>所需配料</h5><div class="ing-list">${ings}</div></div>
+      <div class="rc-sec"><h5>所需调料</h5><div class="ing-list">${seas}</div></div>
+      <div class="rc-sec"><h5>做法步骤</h5><ol class="steps">${steps}</ol></div>
+    </div>`;
+}
+
+function renderPairResult(){
+  const veg = $('#vegSelect').value;
+  const protein = $('#proteinSelect').value;
+  const box = $('#pairResult');
+  if(!veg || !protein){ box.innerHTML = `<div class="empty">请先在上方选择蔬菜类和荤食类食材。</div>`; return; }
+  const list = RECIPES.filter(r=>r.veg===veg && r.protein===protein);
+  if(!list.length){
+    const near = RECIPES.filter(r=>r.veg===veg || r.protein===protein).slice(0,3);
+    box.innerHTML = `<div class="empty">暂未收录「${veg} × ${protein}」的固定做法。你可以试试：${near.map(r=>`<br>· ${r.name}（${r.veg} × ${r.protein}）`).join('') || '暂无推荐'}</div>`;
+    return;
   }
+  box.innerHTML = list.map(r=>recipeCardHTML(r)).join('');
+}
 
-  function renderCats(){ $('#catList').innerHTML = CATEGORIES.map(c=>'<div class="card"><h3>'+c.emoji+' '+esc(c.name)+' <span class="muted">'+c.items.length+'项</span></h3><div class="chips">'+c.items.map(x=>'<span class="chip">'+esc(x)+'</span>').join('')+'</div></div>').join(''); }
+$('#vegSelect').addEventListener('change', ()=>{ populateProteinSelect($('#vegSelect').value); renderPairResult(); });
+$('#proteinSelect').addEventListener('change', ()=>{ populateVegSelect($('#proteinSelect').value); renderPairResult(); });
+$('#btnRandomPair').addEventListener('click', ()=>{
+  const r = RECIPES[Math.floor(Math.random()*RECIPES.length)];
+  $('#vegSelect').value = r.veg;
+  populateProteinSelect(r.veg);
+  $('#proteinSelect').value = r.protein;
+  populateVegSelect(r.protein);
+  renderPairResult();
+});
 
-  function switchTab(name){ $$('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===name)); $$('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+name)); }
+function renderQuickChips(){
+  $('#quickChips').innerHTML = QUICK_PAIRS.map(q=>{
+    return `<span class="chip" data-veg="${q.veg}" data-protein="${q.protein}">🔥 ${q.label}</span>`;
+  }).join('');
+  $$('#quickChips .chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const v=chip.dataset.veg, p=chip.dataset.protein;
+      $('#vegSelect').value=v;
+      populateProteinSelect(v);
+      $('#proteinSelect').value=p;
+      populateVegSelect(p);
+      renderPairResult();
+      $('#pairResult').scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+  });
+}
 
-  $$('nav button').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.page)));
-  $('#btnGenerate').addEventListener('click',()=>{ week=buildWeek(); renderMenu(); });
-  $('#btnRegen').addEventListener('click',()=>{ week=buildWeek(); renderMenu(); });
-  $('#vegSelect').addEventListener('change',renderPair);
-  $('#proteinSelect').addEventListener('change',renderPair);
-    ['recipeSearch','catFilter','styleFilter','typeFilter'].forEach(id=>$('#'+id).addEventListener('input',renderRecipes));
+/* ============ 菜谱库 ============ */
+function renderRecipeList(){
+  const q = $('#recipeSearch').value.trim().toLowerCase();
+  const cat = $('#recipeCatFilter').value;
+  const style = $('#recipeStyleFilter').value;
+  const dtf = $('#recipeDishTypeFilter').value;
+  const box = $('#recipeList');
+  if(dtf === '小菜'){
+    const sides = getFixedSides();
+    box.innerHTML = `<div class="card" style="grid-column:1/-1">
+      <h4 style="margin-bottom:8px">🥬 小菜（固定咸菜）</h4>
+      <p class="meta-line">小菜为固定供应的咸菜，不参与菜谱搭配。</p>
+      <div class="chips" style="margin-top:10px">${sides.map(x=>`<span class="chip">${x}</span>`).join('')}</div>
+    </div>`;
+    return;
+  }
+  let list = RECIPES.filter(r=>{
+    const st = styleOfRecipe(r);
+    const dt = dishTypeOf(r);
+    const hay = `${r.name} ${r.veg} ${r.protein} ${dt} ${r.cat} ${st} ${r.taste} ${r.ingredients.join(' ')} ${r.seasonings.join(' ')}`.toLowerCase();
+    const okQ = !q || hay.includes(q);
+    const okC = !cat || r.cat===cat;
+    const okS = !style || st===style;
+    const okT = !dtf || dt===dtf;
+    return okQ && okC && okS && okT;
+  });
+  if(!list.length){ box.innerHTML = `<div class="empty" style="grid-column:1/-1">没有找到匹配的菜谱。</div>`; return; }
+  box.innerHTML = list.map(r=>{
+    const st = styleOfRecipe(r);
+    const dt = dishTypeOf(r);
+    return `
+    <div class="recipe-card" data-id="${r.id}">
+      <div class="rc-head"><h4>${r.name}</h4><span class="tag-group">${typeTag(dt)}${styleTag(st)}<span class="taste">${r.taste}</span></span></div>
+      <div class="meta-line">🥬 ${r.veg} × 🍖 ${r.protein} · ${dt} · ${r.cat} · ${st}</div>
+      <div class="meta-line">配料：${r.ingredients.slice(0,3).join('、')}${r.ingredients.length>3?'…':''}</div>
+    </div>`;
+  }).join('');
+  $$('#recipeList .recipe-card').forEach(card=>{
+    card.addEventListener('click', ()=> openRecipeModal(Number(card.dataset.id)));
+  });
+}
 
-  $('#weekStart').value = nextMonday();
-  fillPair(); renderMenu(); renderPair(); renderRecipes(); renderCats();
-})();
+$('#recipeSearch').addEventListener('input', renderRecipeList);
+$('#recipeCatFilter').addEventListener('change', renderRecipeList);
+$('#recipeStyleFilter').addEventListener('change', renderRecipeList);
+$('#recipeDishTypeFilter').addEventListener('change', renderRecipeList);
+
+/* ============ 弹窗 ============ */
+function openRecipeModal(id){
+  const r = RECIPES.find(x=>x.id===id);
+  if(!r) return;
+  $('#recipeModalBox').innerHTML = recipeCardHTML(r,{detail:true});
+  $('#recipeModal').classList.add('open');
+}
+$('#recipeModal').addEventListener('click', (e)=>{
+  if(e.target.id==='recipeModal' || e.target.id==='modalClose') $('#recipeModal').classList.remove('open');
+});
+
+/* ============ 食材分类库 ============ */
+function renderCategories(){
+  const q = $('#catSearch').value.trim().toLowerCase();
+  $('#catGrid').innerHTML = CATEGORIES.map(c=>{
+    const items = c.items.filter(i=>!q || i.toLowerCase().includes(q));
+    return `
+      <div class="cat-card">
+        <h3>${c.emoji} ${c.name} <span class="cnt">${items.length} 项</span></h3>
+        <div class="chips">${items.map(i=>`<span class="chip" data-ing="${i}">${i}</span>`).join('')}</div>
+      </div>`;
+  }).join('');
+  $$('#catGrid .chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const ing = chip.dataset.ing;
+      switchTab('recipes');
+      $('#recipeSearch').value = ing;
+      renderRecipeList();
+    });
+  });
+}
+$('#catSearch').addEventListener('input', renderCategories);
+
+/* ============ 导航 ============ */
+function switchTab(name){
+  $$('.nav button').forEach(b=>b.classList.toggle('active', b.dataset.page===name));
+  $$('.page').forEach(p=>p.classList.toggle('active', p.id==='page-'+name));
+}
+$$('.nav button').forEach(b=>{
+  b.addEventListener('click', ()=> switchTab(b.dataset.page));
+});
+
+/* ============ 初始化 ============ */
+function init(){
+  $('#weekStart').value = toISO(nextMonday());
+  $('#fixedSidesInput').value = getFixedSides().join('、');
+  populateVegSelect();
+  populateProteinSelect();
+  renderQuickChips();
+  renderRecipeList();
+  renderCategories();
+  renderPairResult();
+  buildWeek();
+  renderMenu();
+}
+init();
 </script>
 </body>
 </html>
