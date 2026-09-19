@@ -26,6 +26,9 @@
 #daguocai-root th,#daguocai-root td{border:1px solid var(--line);padding:7px;text-align:left;vertical-align:top}
 #daguocai-root th{background:#f0faf9;color:#0f5f59}
 #daguocai-root .day{background:#eef7f6;font-weight:800;color:var(--brand)}
+#daguocai-root td[contenteditable]{outline:none;cursor:text}
+#daguocai-root td[contenteditable]:hover{background:#fffbe6}
+#daguocai-root td[contenteditable]:focus{background:#fff3cd;box-shadow:inset 0 0 0 2px #f59e0b}
 #daguocai-root .side{background:#fffbeb}
 #daguocai-root .meal{font-weight:700}
 #daguocai-root .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
@@ -60,7 +63,7 @@
   <section id="page-home" class="page active">
     <div class="toolbar"><label>起始周一</label><input type="date" id="weekStart"><button class="primary" id="btnGenerate">🎲 生成菜单</button><button class="primary" id="btnRegen">🔄 换一批</button></div>
     <div class="metrics" id="metrics"></div>
-    <div class="card"><table><thead><tr><th>日期/星期</th><th>餐次</th><th>🌶辣菜·大荤</th><th>🌶辣菜·小荤/素菜</th><th>🍲粤菜·大荤</th><th>🍲粤菜·小荤/素菜</th><th>青菜</th><th>例汤</th><th>主食</th><th>咸菜·小菜</th></tr></thead><tbody id="menuBody"></tbody></table><div class="note">固定咸菜：<span id="sideList"></span>。每餐都有辣菜和粤菜，荤素菜/青菜/例汤/主食整周不重复。</div></div>
+    <div class="card"><table><thead><tr><th>日期/星期</th><th>餐次</th><th>🌶辣菜·大荤</th><th>🌶辣菜·小荤/素菜</th><th>🍲粤菜·大荤</th><th>🍲粤菜·小荤/素菜</th><th>青菜</th><th>例汤</th><th>主食</th><th>咸菜·小菜</th></tr></thead><tbody id="menuBody"></tbody></table><div class="note">菜品单元格可直接点击修改；固定咸菜：<span id="sideList"></span>。每餐都有辣菜和粤菜，荤素菜/青菜/例汤/主食整周不重复。</div></div>
   </section>
 
   <section id="page-pair" class="page">
@@ -110,8 +113,8 @@
     const rows=[];
     for(let i=0;i<7;i++){ const d=new Date(start); d.setDate(start.getDate()+i); const label=(d.getMonth()+1)+'/'+d.getDate()+' '+WEEK[i];
       for(let m=0;m<2;m++){ const s=i*2+m; const meal=m===0?'午餐':'晚餐';
-        const cells='<td class="meal">'+meal+'</td><td>'+esc(week.spicyMain[s])+'</td><td>'+esc(week.spicySide[s])+'</td><td>'+esc(week.cantoMain[s])+'</td><td>'+esc(week.cantoSide[s])+'</td><td>'+esc(week.green[s])+'</td><td>'+esc(week.soup[s])+'</td><td>'+esc(week.staple[s])+'</td>';
-        if(m===0){ rows.push('<tr><td class="day" rowspan="2">'+label+'</td>'+cells+'<td class="side" rowspan="2">'+esc(week.sideDish[i*2])+'<br>'+esc(week.sideDish[i*2+1])+'</td></tr>'); }
+        const cells='<td class="meal">'+meal+'</td><td contenteditable="true">'+esc(week.spicyMain[s])+'</td><td contenteditable="true">'+esc(week.spicySide[s])+'</td><td contenteditable="true">'+esc(week.cantoMain[s])+'</td><td contenteditable="true">'+esc(week.cantoSide[s])+'</td><td contenteditable="true">'+esc(week.green[s])+'</td><td contenteditable="true">'+esc(week.soup[s])+'</td><td contenteditable="true">'+esc(week.staple[s])+'</td>';
+        if(m===0){ rows.push('<tr><td class="day" rowspan="2">'+label+'</td>'+cells+'<td class="side" contenteditable="true" rowspan="2">'+esc(week.sideDish[i*2])+'<br>'+esc(week.sideDish[i*2+1])+'</td></tr>'); }
         else { rows.push('<tr>'+cells+'</tr>'); } } }
     $('#menuBody').innerHTML = rows.join('');
     const ing = CATEGORIES.reduce((s,c)=>s+c.items.length,0);
