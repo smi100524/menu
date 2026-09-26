@@ -1,8 +1,11 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>职员餐菜谱系统 · 松岗基地</title><style>
+<
+var DISH_NAMES = ["冬瓜排骨汤", "冬瓜炒虾仁", "冬瓜老鸭汤", "剁椒蒸鱼块", "土豆回锅肉", "土豆烧排骨", "土豆烧牛肉", "土豆烧鸡", "土豆焖猪手", "小炒杏鲍菇", "小炒牛肉", "干煸肥肠", "干锅花菜", "手撕包菜", "杏鲍菇炒牛肉", "毛豆炒肉末", "毛豆炒虾仁", "番茄鱼片", "白菜炒肉", "白菜炖豆腐", "白萝卜炖牛杂", "白萝卜烧牛腩", "红油黄瓜拌猪耳", "肉末炒豆角", "肉末茄子", "胡萝卜炒牛肉", "花菜炒虾仁", "芹菜炒牛肉", "芹菜炒香干", "莲藕排骨汤", "莲藕炒肉片", "莲藕焖猪脚", "莴笋炒肉", "萝卜排骨汤", "萝卜炖羊肉", "蒜苔炒猪脸肉", "蒜苔炒瘦肉", "蒜苔炒肉", "蒜苔炒鸡蛋", "西兰花炒牛肉", "西兰花炒虾仁", "西红柿炒鸡蛋", "西红柿炖牛腩", "西芹炒牛肉", "西芹炒腐竹", "豆角炒肉", "豆角炒鸡蛋", "辣椒炒瘦肉", "辣椒炒肉", "青椒炒蛋", "青椒炒香干", "韭菜炒香干", "韭菜炒鸡蛋", "香菇滑鸡", "香辣牛杂", "香辣鸡丁", "鱼香肉丝", "鲜木耳炒肉", "鲜木耳炒鸡蛋", "黄瓜炒肉片", "黄瓜炒虾仁", "黄瓜炒鸡蛋", "黑椒洋葱炒猪扒"];
+!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>职员餐菜谱系统 · 松岗基地</title><style>
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:"Microsoft YaHei",Arial,sans-serif;background:#f5f7fa;color:#1f2733;font-size:14px;line-height:1.6;padding:16px}.wrap{max-width:1400px;margin:0 auto}.tabs>input{display:none}.tabs{display:block}.sidebar{width:100%;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:linear-gradient(90deg,#0b3b37,#0f766e);color:#fff;border-radius:18px;padding:14px 16px;margin-bottom:16px}.brand{display:flex;gap:10px;align-items:center;margin-right:auto}.logo{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:22px}.brand b{display:block;font-size:16px}.brand small{font-size:11px;opacity:.75}.sidebar label{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:11px;color:#d8f5f1;cursor:pointer;font-weight:700}#t-menu:checked~.sidebar label[for="t-menu"],#t-recipes:checked~.sidebar label[for="t-recipes"],#t-cats:checked~.sidebar label[for="t-cats"]{background:#fff;color:#0f766e}.page{display:none;background:#fff;border:1px solid #e6e9ef;border-radius:18px;padding:22px}#t-menu:checked~.pages #p-menu{display:block}#t-recipes:checked~.pages #p-recipes{display:block}#t-cats:checked~.pages #p-cats{display:block}.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:12px}.toolbar input{padding:8px 10px;border:1px solid #e6e9ef;border-radius:9px}.weeknum{font-weight:800;color:#0f766e}.table-wrap{overflow-x:auto}table{border-collapse:collapse;font-size:13px;width:100%}th,td{border:1px solid #e6e9ef;padding:8px;text-align:center;vertical-align:middle}th{background:#f0faf9;color:#0f5f59}.rowhead{background:#f0faf9;font-weight:800;color:#0f5f59;text-align:center}.spicy{background:#fee2e2}.canto{background:#dbeafe}td{transition:background .1s}.date{background:#eef7f6;font-weight:800;color:#0f766e}details.recipe{border:1px solid #e6e9ef;border-radius:12px;margin-bottom:10px;padding:10px 14px}summary{cursor:pointer;font-weight:800;color:#0f5f59}.tag{display:inline-block;padding:2px 7px;border-radius:6px;font-size:11px;font-weight:700}.dt{background:#ede9fe;color:#6d28d9}.st-spicy{background:#fee2e2;color:#b91c1c}.st-canto{background:#dbeafe;color:#1d4ed8}.chips{display:flex;flex-wrap:wrap;gap:6px}.chip{background:#f1f5f9;border:1px solid #e2e8f0;padding:4px 10px;border-radius:999px;font-size:12px}.note{background:#fff7e8;border:1px solid #fde5b8;color:#9a5b12;padding:10px 14px;border-radius:12px;margin-top:10px}
 .btn{padding:9px 14px;border:1px solid #0f766e;border-radius:10px;background:#0f766e;color:#fff;font-weight:700;cursor:pointer}.btn.save{background:#fff;color:#0f766e}.btn:hover{opacity:.9}td[contenteditable]:hover{background:#fffbe6}td[contenteditable]:focus{background:#fff3cd;box-shadow:inset 0 0 0 2px #f59e0b}
 .taste{font-weight:800}.taste.spicy{background:#f87171;color:#7f1d1d}.taste.canto{background:#60a5fa;color:#1e3a8a}
 .btn.nav{padding:6px 10px;background:#fff;color:#0f766e}
+.dish-input{width:100%;border:none;background:transparent;text-align:center;font:inherit;padding:0}
 </style></head><body><div class="wrap"><div class="tabs">
 <input type="radio" name="tab" id="t-menu" checked><input type="radio" name="tab" id="t-recipes"><input type="radio" name="tab" id="t-cats">
 <aside class="sidebar"><div class="brand"><div class="logo">🍱</div><div><b>职员餐菜谱系统</b><small>松岗基地</small></div></div><label for="t-menu">📅 本周菜单</label><label for="t-recipes">📖 菜谱库</label><label for="t-cats">🥬 食材分类库</label></aside>
@@ -56,10 +59,17 @@ function afterRender(){
   for(var i=0;i<cells.length;i++){
     (function(td,idx){
       td.setAttribute('data-idx', idx);
-      origMap[idx]=td.textContent.trim();
-      td.addEventListener('blur', function(){
-        var v=this.textContent.trim();
-        if(v!==origMap[idx]){ modified[idx]=v; this.style.background='#fef3c7'; }
+      var inp=document.createElement('input');
+      inp.className='dish-input';
+      inp.setAttribute('list','dishList');
+      inp.value=td.textContent.trim();
+      inp.setAttribute('value', inp.value);
+      td.textContent='';
+      td.appendChild(inp);
+      origMap[idx]=inp.value;
+      inp.addEventListener('input', function(){
+        this.setAttribute('value', this.value);
+        if(this.value.trim()!==origMap[idx]){ modified[idx]=this.value; this.style.background='#fef3c7'; }
         else { delete modified[idx]; this.style.background=''; }
       });
     })(cells[i], i);
@@ -71,7 +81,7 @@ function update(salt, preserve){
   if(preserve){
     var cells=$('weekTable').querySelectorAll('td[contenteditable]');
     for(var idx in preserve){
-      if(cells[idx]){ cells[idx].textContent=preserve[idx]; modified[idx]=preserve[idx]; cells[idx].style.background='#fef3c7'; }
+      if(cells[idx]){ var inp=cells[idx].querySelector('input.dish-input'); if(inp){ inp.value=preserve[idx]; inp.setAttribute('value',inp.value);} modified[idx]=preserve[idx]; cells[idx].style.background='#fef3c7'; }
     }
   }
 }
@@ -90,7 +100,7 @@ $('btnGenerate').addEventListener('click',function(){
 function shift(days){var inp=$('weekFilter');var d=new Date(inp.value+'T00:00:00');d.setDate(d.getDate()+days);inp.value=d.toISOString().slice(0,10);update();}
 $('prevWeek').addEventListener('click',function(){shift(-7);});
 $('nextWeek').addEventListener('click',function(){shift(7);});
-$('btnSave').addEventListener('click',function(){try{localStorage.setItem('menuSaved',$('weekTable').innerHTML);localStorage.setItem('menuSavedDate',$('weekFilter').value);alert('已保存');}catch(e){alert('保存失败');}});
+$('btnSave').addEventListener('click',function(){try{var ins=$('weekTable').querySelectorAll('input.dish-input');for(var i=0;i<ins.length;i++){ins[i].setAttribute('value',ins[i].value);}localStorage.setItem('menuSaved',$('weekTable').innerHTML);localStorage.setItem('menuSavedDate',$('weekFilter').value);alert('已保存');}catch(e){alert('保存失败');}});
 var saved=null;try{saved=localStorage.getItem('menuSaved');var sd=localStorage.getItem('menuSavedDate');}catch(e){}
 var d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7));var def=d.toISOString().slice(0,10);
 $('weekFilter').value=sd||def;
@@ -98,4 +108,5 @@ function setWeekLabel(){var v=$('weekFilter').value;var mon=mondayOf(new Date(v+
 if(saved&&sd){$('weekTable').innerHTML=saved;setWeekLabel();}else{update();}
 })();
 </script>
+<datalist id="dishList"><option value="冬瓜排骨汤"></option><option value="冬瓜炒虾仁"></option><option value="冬瓜老鸭汤"></option><option value="剁椒蒸鱼块"></option><option value="土豆回锅肉"></option><option value="土豆烧排骨"></option><option value="土豆烧牛肉"></option><option value="土豆烧鸡"></option><option value="土豆焖猪手"></option><option value="小炒杏鲍菇"></option><option value="小炒牛肉"></option><option value="干煸肥肠"></option><option value="干锅花菜"></option><option value="手撕包菜"></option><option value="杏鲍菇炒牛肉"></option><option value="毛豆炒肉末"></option><option value="毛豆炒虾仁"></option><option value="番茄鱼片"></option><option value="白菜炒肉"></option><option value="白菜炖豆腐"></option><option value="白萝卜炖牛杂"></option><option value="白萝卜烧牛腩"></option><option value="红油黄瓜拌猪耳"></option><option value="肉末炒豆角"></option><option value="肉末茄子"></option><option value="胡萝卜炒牛肉"></option><option value="花菜炒虾仁"></option><option value="芹菜炒牛肉"></option><option value="芹菜炒香干"></option><option value="莲藕排骨汤"></option><option value="莲藕炒肉片"></option><option value="莲藕焖猪脚"></option><option value="莴笋炒肉"></option><option value="萝卜排骨汤"></option><option value="萝卜炖羊肉"></option><option value="蒜苔炒猪脸肉"></option><option value="蒜苔炒瘦肉"></option><option value="蒜苔炒肉"></option><option value="蒜苔炒鸡蛋"></option><option value="西兰花炒牛肉"></option><option value="西兰花炒虾仁"></option><option value="西红柿炒鸡蛋"></option><option value="西红柿炖牛腩"></option><option value="西芹炒牛肉"></option><option value="西芹炒腐竹"></option><option value="豆角炒肉"></option><option value="豆角炒鸡蛋"></option><option value="辣椒炒瘦肉"></option><option value="辣椒炒肉"></option><option value="青椒炒蛋"></option><option value="青椒炒香干"></option><option value="韭菜炒香干"></option><option value="韭菜炒鸡蛋"></option><option value="香菇滑鸡"></option><option value="香辣牛杂"></option><option value="香辣鸡丁"></option><option value="鱼香肉丝"></option><option value="鲜木耳炒肉"></option><option value="鲜木耳炒鸡蛋"></option><option value="黄瓜炒肉片"></option><option value="黄瓜炒虾仁"></option><option value="黄瓜炒鸡蛋"></option><option value="黑椒洋葱炒猪扒"></option></datalist>
 </body></html>
