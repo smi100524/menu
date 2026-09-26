@@ -57,7 +57,8 @@ $('btnSave').addEventListener('click',function(){try{localStorage.setItem('menuS
 var saved=null;try{saved=localStorage.getItem('menuSaved');var sd=localStorage.getItem('menuSavedDate');}catch(e){}
 var d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7));var def=d.toISOString().slice(0,10);
 $('weekFilter').value=sd||def;
-if(saved&&sd){$('weekTable').innerHTML=saved;}else{update();}
+function setWeekLabel(){var v=$('weekFilter').value;var mon=mondayOf(new Date(v+'T00:00:00'));var sun=new Date(mon);sun.setDate(mon.getDate()+5);$('weekNumber').textContent='第 '+isoWeek(mon)+' 周（'+fmt(mon)+' - '+fmt(sun)+'）';}
+if(saved&&sd){$('weekTable').innerHTML=saved;setWeekLabel();}else{update();}
 })();
 </script>
 </body></html>
