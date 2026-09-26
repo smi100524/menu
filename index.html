@@ -55,7 +55,7 @@ $('prevWeek').addEventListener('click',function(){shift(-7);});
 $('nextWeek').addEventListener('click',function(){shift(7);});
 $('btnSave').addEventListener('click',function(){try{localStorage.setItem('menuSaved',$('weekTable').innerHTML);localStorage.setItem('menuSavedDate',$('weekFilter').value);alert('已保存');}catch(e){alert('保存失败');}});
 var saved=null;try{saved=localStorage.getItem('menuSaved');var sd=localStorage.getItem('menuSavedDate');}catch(e){}
-var d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7)+7);var def=d.toISOString().slice(0,10);
+var d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7));var def=d.toISOString().slice(0,10);
 $('weekFilter').value=sd||def;
 if(saved&&sd){$('weekTable').innerHTML=saved;}else{update();}
 })();
