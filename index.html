@@ -2,17 +2,17 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;background:#f5f7fa;color:#1f2733;font-size:14px;line-height:1.6;padding:16px}
 .wrap{max-width:1240px;margin:0 auto}
-.tabs{display:flex;gap:18px;align-items:flex-start}
+.tabs{display:block}
 .tabs>input,.week-switch>input{display:none}
-.sidebar{width:240px;flex:0 0 240px;background:linear-gradient(180deg,#0b3b37 0%,#0f766e 100%);color:#fff;border-radius:18px;padding:20px 14px;position:sticky;top:16px;min-height:calc(100vh - 32px);box-shadow:0 10px 30px rgba(15,118,110,.18)}
-.brand{display:flex;gap:10px;align-items:center;margin-bottom:22px;padding:0 6px}
+.sidebar{width:100%;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:linear-gradient(90deg,#0b3b37 0%,#0f766e 100%);color:#fff;border-radius:18px;padding:14px 16px;box-shadow:0 10px 30px rgba(15,118,110,.18);margin-bottom:16px}
+.brand{display:flex;gap:10px;align-items:center;margin-right:auto;padding:0}
 .logo{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:22px}
 .brand b{display:block;font-size:16px}
 .brand small{display:block;font-size:11px;opacity:.75;font-weight:400}
-.sidebar label{display:flex;align-items:center;gap:10px;padding:11px 13px;margin:6px 0;border-radius:11px;background:transparent;color:#d8f5f1;cursor:pointer;font-weight:700}
+.sidebar label{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;margin:0;border-radius:11px;background:transparent;color:#d8f5f1;cursor:pointer;font-weight:700}
 #t-menu:checked~.sidebar label[for="t-menu"],#t-pair:checked~.sidebar label[for="t-pair"],#t-recipes:checked~.sidebar label[for="t-recipes"],#t-cats:checked~.sidebar label[for="t-cats"]{background:#fff;color:#0f766e}
-.side-foot{margin-top:auto;font-size:11px;opacity:.7;padding:16px 6px 0}
-.pages{flex:1;min-width:0}
+.side-foot{display:none}
+.pages{margin-top:0}
 .page{display:none;background:#fff;border:1px solid #e6e9ef;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(30,41,59,.06)}
 #t-menu:checked~.pages #p-menu{display:block}#t-pair:checked~.pages #p-pair{display:block}#t-recipes:checked~.pages #p-recipes{display:block}#t-cats:checked~.pages #p-cats{display:block}
 h2{font-size:20px;margin-bottom:14px;color:#0f5f59}
