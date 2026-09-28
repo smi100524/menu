@@ -133,7 +133,8 @@ function afterRender(){
       inp.className='dish-input';
       inp.setAttribute('list', listForCell(td));
       inp.setAttribute('autocomplete','off');
-      inp.value=td.textContent.trim();
+      var oldInp=td.querySelector('input.dish-input');
+      inp.value=oldInp?oldInp.value:td.textContent.trim();
       inp.setAttribute('value', inp.value);
       td.textContent='';
       td.appendChild(inp);
@@ -176,7 +177,7 @@ var saved=null;try{saved=localStorage.getItem('menuSaved');var sd=localStorage.g
 var d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7));var def=d.toISOString().slice(0,10);
 $('weekFilter').value=sd||def;
 function setWeekLabel(){var v=$('weekFilter').value;var mon=mondayOf(new Date(v+'T00:00:00'));var sun=new Date(mon);sun.setDate(mon.getDate()+5);$('weekNumber').textContent='第 '+isoWeek(mon)+' 周（'+fmt(mon)+' - '+fmt(sun)+'）';}
-if(saved&&sd){$('weekTable').innerHTML=saved;setWeekLabel();}else{update();}
+if(saved&&sd){$('weekTable').innerHTML=saved;setWeekLabel();afterRender();}else{update();}
 })();
 </script>
 
