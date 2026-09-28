@@ -109,4 +109,26 @@ if(saved&&sd){$('weekTable').innerHTML=saved;setWeekLabel();}else{update();}
 })();
 </script>
 <datalist id="dishList"><option value="冬瓜排骨汤"></option><option value="冬瓜炒虾仁"></option><option value="冬瓜老鸭汤"></option><option value="剁椒蒸鱼块"></option><option value="土豆回锅肉"></option><option value="土豆烧排骨"></option><option value="土豆烧牛肉"></option><option value="土豆烧鸡"></option><option value="土豆焖猪手"></option><option value="小炒杏鲍菇"></option><option value="小炒牛肉"></option><option value="干煸肥肠"></option><option value="干锅花菜"></option><option value="手撕包菜"></option><option value="杏鲍菇炒牛肉"></option><option value="毛豆炒肉末"></option><option value="毛豆炒虾仁"></option><option value="番茄鱼片"></option><option value="白菜炒肉"></option><option value="白菜炖豆腐"></option><option value="白萝卜炖牛杂"></option><option value="白萝卜烧牛腩"></option><option value="红油黄瓜拌猪耳"></option><option value="肉末炒豆角"></option><option value="肉末茄子"></option><option value="胡萝卜炒牛肉"></option><option value="花菜炒虾仁"></option><option value="芹菜炒牛肉"></option><option value="芹菜炒香干"></option><option value="莲藕排骨汤"></option><option value="莲藕炒肉片"></option><option value="莲藕焖猪脚"></option><option value="莴笋炒肉"></option><option value="萝卜排骨汤"></option><option value="萝卜炖羊肉"></option><option value="蒜苔炒猪脸肉"></option><option value="蒜苔炒瘦肉"></option><option value="蒜苔炒肉"></option><option value="蒜苔炒鸡蛋"></option><option value="西兰花炒牛肉"></option><option value="西兰花炒虾仁"></option><option value="西红柿炒鸡蛋"></option><option value="西红柿炖牛腩"></option><option value="西芹炒牛肉"></option><option value="西芹炒腐竹"></option><option value="豆角炒肉"></option><option value="豆角炒鸡蛋"></option><option value="辣椒炒瘦肉"></option><option value="辣椒炒肉"></option><option value="青椒炒蛋"></option><option value="青椒炒香干"></option><option value="韭菜炒香干"></option><option value="韭菜炒鸡蛋"></option><option value="香菇滑鸡"></option><option value="香辣牛杂"></option><option value="香辣鸡丁"></option><option value="鱼香肉丝"></option><option value="鲜木耳炒肉"></option><option value="鲜木耳炒鸡蛋"></option><option value="黄瓜炒肉片"></option><option value="黄瓜炒虾仁"></option><option value="黄瓜炒鸡蛋"></option><option value="黑椒洋葱炒猪扒"></option></datalist>
-<script>(function(){var btns=document.querySelectorAll('.recipe-filters button');btns.forEach(function(b){b.addEventListener('click',function(){btns.forEach(function(x){x.classList.remove('active')});b.classList.add('active');var t=b.getAttribute('data-type');document.querySelectorAll('.dish-group').forEach(function(g){g.style.display=(t==='all'||g.getAttribute('data-type')===t)?'':'none';});});});})();</script><script>(function(){document.querySelectorAll('details.recipe:not(.hist)').forEach(function(d){var t=d.querySelector('.tag.dt');if(t)d.setAttribute('data-type',t.textContent)});var btns=document.querySelectorAll('.recipe-filters button');btns.forEach(function(b){b.addEventListener('click',function(){btns.forEach(function(x){x.classList.remove('active')});b.classList.add('active');var t=b.getAttribute('data-type');document.querySelectorAll('details.recipe').forEach(function(d){d.style.display=(t==='all'||d.getAttribute('data-type')===t)?'':'none';});});});})();</script></body></html>
+<script>(function(){var btns=document.querySelectorAll('.recipe-filters button');btns.forEach(function(b){b.addEventListener('click',function(){btns.forEach(function(x){x.classList.remove('active')});b.classList.add('active');var t=b.getAttribute('data-type');document.querySelectorAll('.dish-group').forEach(function(g){g.style.display=(t==='all'||g.getAttribute('data-type')===t)?'':'none';});});});})();</script><script>(function(){document.querySelectorAll('details.recipe:not(.hist)').forEach(function(d){var t=d.querySelector('.tag.dt');if(t)d.setAttribute('data-type',t.textContent)});var btns=document.querySelectorAll('.recipe-filters button');btns.forEach(function(b){b.addEventListener('click',function(){btns.forEach(function(x){x.classList.remove('active')});b.classList.add('active');var t=b.getAttribute('data-type');document.querySelectorAll('details.recipe').forEach(function(d){d.style.display=(t==='all'||d.getAttribute('data-type')===t)?'':'none';});});});})();</script><script>
+(function(){
+  document.querySelectorAll('.cat .chip').forEach(function(chip){
+    chip.style.cursor='pointer';
+    chip.addEventListener('click', function(){
+      var ing=this.textContent.trim();
+      var radio=document.getElementById('t-recipes');
+      if(radio) radio.checked=true;
+      var search=document.getElementById('recipeSearch');
+      if(search){
+        search.value=ing;
+        search.dispatchEvent(new Event('input',{bubbles:true}));
+      }
+      setTimeout(function(){
+        var page=document.getElementById('p-recipes');
+        if(page) page.scrollIntoView({behavior:'smooth',block:'start'});
+      },80);
+    });
+  });
+})();
+</script>
+<!-- 食材分类库点击联动 -->
+</body></html>
