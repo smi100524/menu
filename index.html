@@ -47,7 +47,7 @@ function render(mon, salt){
    html+='<tr><td class="rowhead">大荤</td>'+dishCells(big)+'</tr>';
    html+='<tr><td class="rowhead">小荤</td>'+dishCells(small)+'</tr>';
    html+='<tr><td class="rowhead">素菜</td>'+dishCells(veg)+'</tr>';
-   var g='';for(var j=0;j<3;j++){var di=base+j;g+= di==5 ? '<td contenteditable="true">青菜</td><td>/</td>' : '<td contenteditable="true">青菜</td><td contenteditable="true">青菜</td>';}
+   var g='';for(var j=0;j<3;j++){var di=base+j;g+= di==5 ? '<td colspan="2" contenteditable="true">青菜</td><td colspan="2">/</td>' : '<td colspan="2" contenteditable="true">青菜</td><td colspan="2" contenteditable="true">青菜</td>';}
    html+='<tr><td class="rowhead">青菜</td>'+g+'</tr>';
    var so='',st='',si='';for(var j=0;j<3;j++){var di=base+j; if(di==5){so+='<td colspan="2" contenteditable="true">'+esc(soup[di])+'</td><td colspan="2">/</td>';st+='<td colspan="2" contenteditable="true">'+esc(staple[di])+'</td><td colspan="2">/</td>';}else{so+='<td colspan="2" contenteditable="true">'+esc(soup[di])+'</td><td colspan="2" contenteditable="true">'+esc(por[di])+'</td>';st+='<td colspan="2" contenteditable="true">'+esc(staple[di])+'</td><td colspan="2" contenteditable="true">'+esc(staple[di+5])+'</td>';}si+='<td colspan="4" contenteditable="true">'+esc(SIDES[(di*2)%SIDES.length])+'、'+esc(SIDES[(di*2+1)%SIDES.length])+'</td>';}
    html+='<tr><td class="rowhead">例汤</td>'+so+'</tr><tr><td class="rowhead">主食</td>'+st+'</tr><tr><td class="rowhead">小菜</td>'+si+'</tr>';
