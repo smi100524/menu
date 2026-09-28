@@ -216,7 +216,8 @@ var saved=null;try{saved=localStorage.getItem('menuSavedV2');var sd=localStorage
 var d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7));var def=d.toISOString().slice(0,10);
 $('weekFilter').value=sd||def;
 function setWeekLabel(){var v=$('weekFilter').value;var mon=mondayOf(new Date(v+'T00:00:00'));var sun=new Date(mon);sun.setDate(mon.getDate()+5);$('weekNumber').textContent='第 '+isoWeek(mon)+' 周（'+fmt(mon)+' - '+fmt(sun)+'）';}
-if(saved&&sd){$('weekTable').innerHTML=saved;setWeekLabel();afterRender();}else{update();}
+function histKeyFor(v){var d=new Date(v+'T00:00:00');var mon=mondayOf(d);return mon.getFullYear()+'-'+('0'+isoWeek(mon)).slice(-2);}
+if(saved&&sd&&!HIST_MENUS[histKeyFor(sd)]){$('weekTable').innerHTML=saved;setWeekLabel();afterRender();}else{update();}
 })();
 </script>
 
