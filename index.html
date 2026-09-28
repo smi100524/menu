@@ -53,7 +53,47 @@ function render(mon, salt){
  });
  return '<table>'+html+'</table>';
 }
+
+function buildDishLists(){
+  if(window.__dishListsReady) return;
+  var groups={'大荤':[],'小荤':[],'素菜':[],'汤':[],'粥类':[],'主食':[],'小菜':[]};
+  document.querySelectorAll('details.recipe').forEach(function(d){
+    var type=d.getAttribute('data-type') || (d.querySelector('.tag.dt')?d.querySelector('.tag.dt').textContent.trim():'');
+    var sm=d.querySelector('summary'); if(!sm||!groups[type]) return;
+    var name='';
+    for(var i=0;i<sm.childNodes.length;i++){ if(sm.childNodes[i].nodeType===3) name+=sm.childNodes[i].textContent; }
+    name=name.trim(); if(name&&groups[type].indexOf(name)<0) groups[type].push(name);
+  });
+  function options(arr){return arr.map(function(n){return '<option value="'+n.replace(/"/g,'&quot;')+'"></option>';}).join('');}
+  var map={'大荤':'dl-big','小荤':'dl-small','素菜':'dl-veg','汤':'dl-soup','粥类':'dl-porridge','主食':'dl-staple','小菜':'dl-side'};
+  Object.keys(map).forEach(function(type){
+    var id=map[type], dl=document.getElementById(id);
+    if(!dl){dl=document.createElement('datalist');dl.id=id;document.body.appendChild(dl);}
+    dl.innerHTML=options(groups[type]||[]);
+  });
+  var green=(groups['素菜']||[]).filter(function(n){return /青菜|菜心|油麦菜|菠菜|小白菜|生菜|芥蓝|空心菜|娃娃菜|上海青|苋菜|豆苗/.test(n);});
+  var gd=document.getElementById('dl-green'); if(!gd){gd=document.createElement('datalist');gd.id='dl-green';document.body.appendChild(gd);}
+  gd.innerHTML=options(green.length?green:(groups['素菜']||[]));
+  window.__dishListsReady=true;
+}
+function listForCell(td){
+  var row=td.parentElement; if(!row) return 'dl-big';
+  var rh=row.querySelector('td.rowhead'); var label=rh?rh.textContent.trim():'';
+  if(label==='大荤') return 'dl-big';
+  if(label==='小荤') return 'dl-small';
+  if(label==='素菜') return 'dl-veg';
+  if(label==='青菜') return 'dl-green';
+  if(label==='汤'){
+    var tds=[].slice.call(row.children).filter(function(x){return x.tagName==='TD'&&!x.classList.contains('rowhead');});
+    return (tds.indexOf(td)%2===1)?'dl-porridge':'dl-soup';
+  }
+  if(label==='主食') return 'dl-staple';
+  if(label==='小菜') return 'dl-side';
+  return 'dl-big';
+}
+
 function afterRender(){
+  buildDishLists();
   var cells=$('weekTable').querySelectorAll('td[contenteditable]');
   origMap={};
   for(var i=0;i<cells.length;i++){
@@ -61,7 +101,7 @@ function afterRender(){
       td.setAttribute('data-idx', idx);
       var inp=document.createElement('input');
       inp.className='dish-input';
-      inp.setAttribute('list','dishList');
+      inp.setAttribute('list', listForCell(td));
       inp.value=td.textContent.trim();
       inp.setAttribute('value', inp.value);
       td.textContent='';
